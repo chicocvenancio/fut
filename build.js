@@ -21425,7 +21425,7 @@ var AppComponent = (function () {
     AppComponent.decorators = [
         { type: Component, args: [{
                     selector: 'fut',
-                    template: "\n    <h1 class=\"title\">Aplicativo de Futebol</h1>\n        <nav class=\"nav\">\n            <a routerLink=\"/fut/jogadores\" routerLinkActive=\"active\">Jogadores</a>\n            <a routerLink=\"/fut/equipes\" routerLinkActive=\"active\" class=\"disabled\">Equipes</a>\n            <a routerLink=\"/fut/competicao\" routerLinkActive=\"active\" class=\"disabled\">Competi\u00E7\u00F5es</a>\n        </nav>\n    <div class=\"container-fluid\">    \n        <router-outlet></router-outlet>\n    </div>\n    "
+                    template: "\n    <div class=\"container-fluid\">\n        <h1 class=\"title\">Aplicativo de Futebol</h1>\n        <nav class=\"nav navbar-default\">\n            <a routerLink=\"/fut/jogadores\" routerLinkActive=\"active\">Jogadores</a>\n            <a routerLink=\"/fut/equipes\" routerLinkActive=\"active\" class=\"disabled\">Equipes</a>\n            <a routerLink=\"/fut/competicao\" routerLinkActive=\"active\" class=\"disabled\">Competi\u00E7\u00F5es</a>\n        </nav>\n        \n        <router-outlet></router-outlet>\n    </div>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -29187,61 +29187,61 @@ var View_AppComponent0 = (function (_super) {
     View_AppComponent0.prototype.createInternal = function (rootSelector) {
         var parentRenderNode = this.renderer.createViewRoot(this.parentElement);
         this._text_0 = this.renderer.createText(parentRenderNode, '\n    ', null);
-        this._el_1 = createRenderElement(this.renderer, parentRenderNode, 'h1', new InlineArray2(2, 'class', 'title'), null);
-        this._text_2 = this.renderer.createText(this._el_1, 'Aplicativo de Futebol', null);
-        this._text_3 = this.renderer.createText(parentRenderNode, '\n        ', null);
-        this._el_4 = createRenderElement(this.renderer, parentRenderNode, 'nav', new InlineArray2(2, 'class', 'nav'), null);
-        this._text_5 = this.renderer.createText(this._el_4, '\n            ', null);
-        this._el_6 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/fut/jogadores', 'routerLinkActive', 'active'), null);
-        this._RouterLinkWithHref_6_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
-        this._RouterLinkActive_6_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_6), this.renderer);
-        this._query_RouterLink_6_0 = new QueryList();
-        this._query_RouterLinkWithHref_6_1 = new QueryList();
-        this._text_7 = this.renderer.createText(this._el_6, 'Jogadores', null);
-        this._text_8 = this.renderer.createText(this._el_4, '\n            ', null);
-        this._el_9 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray8(6, 'class', 'disabled', 'routerLink', '/fut/equipes', 'routerLinkActive', 'active'), null);
-        this._RouterLinkWithHref_9_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
-        this._RouterLinkActive_9_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_9), this.renderer);
-        this._query_RouterLink_9_0 = new QueryList();
-        this._query_RouterLinkWithHref_9_1 = new QueryList();
-        this._text_10 = this.renderer.createText(this._el_9, 'Equipes', null);
-        this._text_11 = this.renderer.createText(this._el_4, '\n            ', null);
-        this._el_12 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray8(6, 'class', 'disabled', 'routerLink', '/fut/competicao', 'routerLinkActive', 'active'), null);
-        this._RouterLinkWithHref_12_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
-        this._RouterLinkActive_12_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_12), this.renderer);
-        this._query_RouterLink_12_0 = new QueryList();
-        this._query_RouterLinkWithHref_12_1 = new QueryList();
-        this._text_13 = this.renderer.createText(this._el_12, 'Competições', null);
-        this._text_14 = this.renderer.createText(this._el_4, '\n        ', null);
-        this._text_15 = this.renderer.createText(parentRenderNode, '\n    ', null);
-        this._el_16 = createRenderElement(this.renderer, parentRenderNode, 'div', new InlineArray2(2, 'class', 'container-fluid'), null);
-        this._text_17 = this.renderer.createText(this._el_16, '    \n        ', null);
-        this._el_18 = createRenderElement(this.renderer, this._el_16, 'router-outlet', EMPTY_INLINE_ARRAY, null);
-        this._vc_18 = new ViewContainer(18, 16, this, this._el_18);
+        this._el_1 = createRenderElement(this.renderer, parentRenderNode, 'div', new InlineArray2(2, 'class', 'container-fluid'), null);
+        this._text_2 = this.renderer.createText(this._el_1, '\n        ', null);
+        this._el_3 = createRenderElement(this.renderer, this._el_1, 'h1', new InlineArray2(2, 'class', 'title'), null);
+        this._text_4 = this.renderer.createText(this._el_3, 'Aplicativo de Futebol', null);
+        this._text_5 = this.renderer.createText(this._el_1, '\n        ', null);
+        this._el_6 = createRenderElement(this.renderer, this._el_1, 'nav', new InlineArray2(2, 'class', 'nav navbar-default'), null);
+        this._text_7 = this.renderer.createText(this._el_6, '\n            ', null);
+        this._el_8 = createRenderElement(this.renderer, this._el_6, 'a', new InlineArray4(4, 'routerLink', '/fut/jogadores', 'routerLinkActive', 'active'), null);
+        this._RouterLinkWithHref_8_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
+        this._RouterLinkActive_8_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_8), this.renderer);
+        this._query_RouterLink_8_0 = new QueryList();
+        this._query_RouterLinkWithHref_8_1 = new QueryList();
+        this._text_9 = this.renderer.createText(this._el_8, 'Jogadores', null);
+        this._text_10 = this.renderer.createText(this._el_6, '\n            ', null);
+        this._el_11 = createRenderElement(this.renderer, this._el_6, 'a', new InlineArray8(6, 'class', 'disabled', 'routerLink', '/fut/equipes', 'routerLinkActive', 'active'), null);
+        this._RouterLinkWithHref_11_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
+        this._RouterLinkActive_11_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_11), this.renderer);
+        this._query_RouterLink_11_0 = new QueryList();
+        this._query_RouterLinkWithHref_11_1 = new QueryList();
+        this._text_12 = this.renderer.createText(this._el_11, 'Equipes', null);
+        this._text_13 = this.renderer.createText(this._el_6, '\n            ', null);
+        this._el_14 = createRenderElement(this.renderer, this._el_6, 'a', new InlineArray8(6, 'class', 'disabled', 'routerLink', '/fut/competicao', 'routerLinkActive', 'active'), null);
+        this._RouterLinkWithHref_14_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
+        this._RouterLinkActive_14_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_14), this.renderer);
+        this._query_RouterLink_14_0 = new QueryList();
+        this._query_RouterLinkWithHref_14_1 = new QueryList();
+        this._text_15 = this.renderer.createText(this._el_14, 'Competições', null);
+        this._text_16 = this.renderer.createText(this._el_6, '\n        ', null);
+        this._text_17 = this.renderer.createText(this._el_1, '\n        \n        ', null);
+        this._el_18 = createRenderElement(this.renderer, this._el_1, 'router-outlet', EMPTY_INLINE_ARRAY, null);
+        this._vc_18 = new ViewContainer(18, 1, this, this._el_18);
         this._RouterOutlet_18_5 = new Wrapper_RouterOutlet(this.parentView.injectorGet(RouterOutletMap, this.parentIndex), this._vc_18.vcRef, this.parentView.injectorGet(ComponentFactoryResolver, this.parentIndex), null);
-        this._text_19 = this.renderer.createText(this._el_16, '\n    ', null);
+        this._text_19 = this.renderer.createText(this._el_1, '\n    ', null);
         this._text_20 = this.renderer.createText(parentRenderNode, '\n    ', null);
-        var disposable_0 = subscribeToRenderElement(this, this._el_6, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_6));
-        var disposable_1 = subscribeToRenderElement(this, this._el_9, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_9));
-        var disposable_2 = subscribeToRenderElement(this, this._el_12, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_12));
+        var disposable_0 = subscribeToRenderElement(this, this._el_8, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_8));
+        var disposable_1 = subscribeToRenderElement(this, this._el_11, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_11));
+        var disposable_2 = subscribeToRenderElement(this, this._el_14, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_14));
         this.init(null, (this.renderer.directRenderer ? null : [
             this._text_0,
             this._el_1,
             this._text_2,
-            this._text_3,
-            this._el_4,
+            this._el_3,
+            this._text_4,
             this._text_5,
             this._el_6,
             this._text_7,
-            this._text_8,
-            this._el_9,
+            this._el_8,
+            this._text_9,
             this._text_10,
-            this._text_11,
-            this._el_12,
+            this._el_11,
+            this._text_12,
             this._text_13,
-            this._text_14,
+            this._el_14,
             this._text_15,
-            this._el_16,
+            this._text_16,
             this._text_17,
             this._el_18,
             this._text_19,
@@ -29254,23 +29254,23 @@ var View_AppComponent0 = (function (_super) {
         return null;
     };
     View_AppComponent0.prototype.injectorGetInternal = function (token, requestNodeIndex, notFoundResult) {
-        if (((token === RouterLinkWithHref) && ((6 <= requestNodeIndex) && (requestNodeIndex <= 7)))) {
-            return this._RouterLinkWithHref_6_3.context;
+        if (((token === RouterLinkWithHref) && ((8 <= requestNodeIndex) && (requestNodeIndex <= 9)))) {
+            return this._RouterLinkWithHref_8_3.context;
         }
-        if (((token === RouterLinkActive) && ((6 <= requestNodeIndex) && (requestNodeIndex <= 7)))) {
-            return this._RouterLinkActive_6_4.context;
+        if (((token === RouterLinkActive) && ((8 <= requestNodeIndex) && (requestNodeIndex <= 9)))) {
+            return this._RouterLinkActive_8_4.context;
         }
-        if (((token === RouterLinkWithHref) && ((9 <= requestNodeIndex) && (requestNodeIndex <= 10)))) {
-            return this._RouterLinkWithHref_9_3.context;
+        if (((token === RouterLinkWithHref) && ((11 <= requestNodeIndex) && (requestNodeIndex <= 12)))) {
+            return this._RouterLinkWithHref_11_3.context;
         }
-        if (((token === RouterLinkActive) && ((9 <= requestNodeIndex) && (requestNodeIndex <= 10)))) {
-            return this._RouterLinkActive_9_4.context;
+        if (((token === RouterLinkActive) && ((11 <= requestNodeIndex) && (requestNodeIndex <= 12)))) {
+            return this._RouterLinkActive_11_4.context;
         }
-        if (((token === RouterLinkWithHref) && ((12 <= requestNodeIndex) && (requestNodeIndex <= 13)))) {
-            return this._RouterLinkWithHref_12_3.context;
+        if (((token === RouterLinkWithHref) && ((14 <= requestNodeIndex) && (requestNodeIndex <= 15)))) {
+            return this._RouterLinkWithHref_14_3.context;
         }
-        if (((token === RouterLinkActive) && ((12 <= requestNodeIndex) && (requestNodeIndex <= 13)))) {
-            return this._RouterLinkActive_12_4.context;
+        if (((token === RouterLinkActive) && ((14 <= requestNodeIndex) && (requestNodeIndex <= 15)))) {
+            return this._RouterLinkActive_14_4.context;
         }
         if (((token === RouterOutlet) && (18 === requestNodeIndex))) {
             return this._RouterOutlet_18_5.context;
@@ -29278,97 +29278,97 @@ var View_AppComponent0 = (function (_super) {
         return notFoundResult;
     };
     View_AppComponent0.prototype.detectChangesInternal = function (throwOnChange) {
-        var currVal_6_0_0 = '/fut/jogadores';
-        this._RouterLinkWithHref_6_3.check_routerLink(currVal_6_0_0, throwOnChange, false);
-        this._RouterLinkWithHref_6_3.ngDoCheck(this, this._el_6, throwOnChange);
-        var currVal_6_1_0 = 'active';
-        this._RouterLinkActive_6_4.check_routerLinkActive(currVal_6_1_0, throwOnChange, false);
-        this._RouterLinkActive_6_4.ngDoCheck(this, this._el_6, throwOnChange);
-        var currVal_9_0_0 = '/fut/equipes';
-        this._RouterLinkWithHref_9_3.check_routerLink(currVal_9_0_0, throwOnChange, false);
-        this._RouterLinkWithHref_9_3.ngDoCheck(this, this._el_9, throwOnChange);
-        var currVal_9_1_0 = 'active';
-        this._RouterLinkActive_9_4.check_routerLinkActive(currVal_9_1_0, throwOnChange, false);
-        this._RouterLinkActive_9_4.ngDoCheck(this, this._el_9, throwOnChange);
-        var currVal_12_0_0 = '/fut/competicao';
-        this._RouterLinkWithHref_12_3.check_routerLink(currVal_12_0_0, throwOnChange, false);
-        this._RouterLinkWithHref_12_3.ngDoCheck(this, this._el_12, throwOnChange);
-        var currVal_12_1_0 = 'active';
-        this._RouterLinkActive_12_4.check_routerLinkActive(currVal_12_1_0, throwOnChange, false);
-        this._RouterLinkActive_12_4.ngDoCheck(this, this._el_12, throwOnChange);
+        var currVal_8_0_0 = '/fut/jogadores';
+        this._RouterLinkWithHref_8_3.check_routerLink(currVal_8_0_0, throwOnChange, false);
+        this._RouterLinkWithHref_8_3.ngDoCheck(this, this._el_8, throwOnChange);
+        var currVal_8_1_0 = 'active';
+        this._RouterLinkActive_8_4.check_routerLinkActive(currVal_8_1_0, throwOnChange, false);
+        this._RouterLinkActive_8_4.ngDoCheck(this, this._el_8, throwOnChange);
+        var currVal_11_0_0 = '/fut/equipes';
+        this._RouterLinkWithHref_11_3.check_routerLink(currVal_11_0_0, throwOnChange, false);
+        this._RouterLinkWithHref_11_3.ngDoCheck(this, this._el_11, throwOnChange);
+        var currVal_11_1_0 = 'active';
+        this._RouterLinkActive_11_4.check_routerLinkActive(currVal_11_1_0, throwOnChange, false);
+        this._RouterLinkActive_11_4.ngDoCheck(this, this._el_11, throwOnChange);
+        var currVal_14_0_0 = '/fut/competicao';
+        this._RouterLinkWithHref_14_3.check_routerLink(currVal_14_0_0, throwOnChange, false);
+        this._RouterLinkWithHref_14_3.ngDoCheck(this, this._el_14, throwOnChange);
+        var currVal_14_1_0 = 'active';
+        this._RouterLinkActive_14_4.check_routerLinkActive(currVal_14_1_0, throwOnChange, false);
+        this._RouterLinkActive_14_4.ngDoCheck(this, this._el_14, throwOnChange);
         this._RouterOutlet_18_5.ngDoCheck(this, this._el_18, throwOnChange);
         this._vc_18.detectChangesInNestedViews(throwOnChange);
         if (!throwOnChange) {
-            if (this._query_RouterLink_6_0.dirty) {
-                this._query_RouterLink_6_0.reset([]);
-                this._RouterLinkActive_6_4.context.links = this._query_RouterLink_6_0;
-                this._query_RouterLink_6_0.notifyOnChanges();
+            if (this._query_RouterLink_8_0.dirty) {
+                this._query_RouterLink_8_0.reset([]);
+                this._RouterLinkActive_8_4.context.links = this._query_RouterLink_8_0;
+                this._query_RouterLink_8_0.notifyOnChanges();
             }
-            if (this._query_RouterLinkWithHref_6_1.dirty) {
-                this._query_RouterLinkWithHref_6_1.reset([this._RouterLinkWithHref_6_3.context]);
-                this._RouterLinkActive_6_4.context.linksWithHrefs = this._query_RouterLinkWithHref_6_1;
-                this._query_RouterLinkWithHref_6_1.notifyOnChanges();
+            if (this._query_RouterLinkWithHref_8_1.dirty) {
+                this._query_RouterLinkWithHref_8_1.reset([this._RouterLinkWithHref_8_3.context]);
+                this._RouterLinkActive_8_4.context.linksWithHrefs = this._query_RouterLinkWithHref_8_1;
+                this._query_RouterLinkWithHref_8_1.notifyOnChanges();
             }
-            if (this._query_RouterLink_9_0.dirty) {
-                this._query_RouterLink_9_0.reset([]);
-                this._RouterLinkActive_9_4.context.links = this._query_RouterLink_9_0;
-                this._query_RouterLink_9_0.notifyOnChanges();
+            if (this._query_RouterLink_11_0.dirty) {
+                this._query_RouterLink_11_0.reset([]);
+                this._RouterLinkActive_11_4.context.links = this._query_RouterLink_11_0;
+                this._query_RouterLink_11_0.notifyOnChanges();
             }
-            if (this._query_RouterLinkWithHref_9_1.dirty) {
-                this._query_RouterLinkWithHref_9_1.reset([this._RouterLinkWithHref_9_3.context]);
-                this._RouterLinkActive_9_4.context.linksWithHrefs = this._query_RouterLinkWithHref_9_1;
-                this._query_RouterLinkWithHref_9_1.notifyOnChanges();
+            if (this._query_RouterLinkWithHref_11_1.dirty) {
+                this._query_RouterLinkWithHref_11_1.reset([this._RouterLinkWithHref_11_3.context]);
+                this._RouterLinkActive_11_4.context.linksWithHrefs = this._query_RouterLinkWithHref_11_1;
+                this._query_RouterLinkWithHref_11_1.notifyOnChanges();
             }
-            if (this._query_RouterLink_12_0.dirty) {
-                this._query_RouterLink_12_0.reset([]);
-                this._RouterLinkActive_12_4.context.links = this._query_RouterLink_12_0;
-                this._query_RouterLink_12_0.notifyOnChanges();
+            if (this._query_RouterLink_14_0.dirty) {
+                this._query_RouterLink_14_0.reset([]);
+                this._RouterLinkActive_14_4.context.links = this._query_RouterLink_14_0;
+                this._query_RouterLink_14_0.notifyOnChanges();
             }
-            if (this._query_RouterLinkWithHref_12_1.dirty) {
-                this._query_RouterLinkWithHref_12_1.reset([this._RouterLinkWithHref_12_3.context]);
-                this._RouterLinkActive_12_4.context.linksWithHrefs = this._query_RouterLinkWithHref_12_1;
-                this._query_RouterLinkWithHref_12_1.notifyOnChanges();
-            }
-            if ((this.numberOfChecks === 0)) {
-                this._RouterLinkActive_6_4.context.ngAfterContentInit();
+            if (this._query_RouterLinkWithHref_14_1.dirty) {
+                this._query_RouterLinkWithHref_14_1.reset([this._RouterLinkWithHref_14_3.context]);
+                this._RouterLinkActive_14_4.context.linksWithHrefs = this._query_RouterLinkWithHref_14_1;
+                this._query_RouterLinkWithHref_14_1.notifyOnChanges();
             }
             if ((this.numberOfChecks === 0)) {
-                this._RouterLinkActive_9_4.context.ngAfterContentInit();
+                this._RouterLinkActive_8_4.context.ngAfterContentInit();
             }
             if ((this.numberOfChecks === 0)) {
-                this._RouterLinkActive_12_4.context.ngAfterContentInit();
+                this._RouterLinkActive_11_4.context.ngAfterContentInit();
+            }
+            if ((this.numberOfChecks === 0)) {
+                this._RouterLinkActive_14_4.context.ngAfterContentInit();
             }
         }
-        this._RouterLinkWithHref_6_3.checkHost(this, this, this._el_6, throwOnChange);
-        this._RouterLinkWithHref_9_3.checkHost(this, this, this._el_9, throwOnChange);
-        this._RouterLinkWithHref_12_3.checkHost(this, this, this._el_12, throwOnChange);
+        this._RouterLinkWithHref_8_3.checkHost(this, this, this._el_8, throwOnChange);
+        this._RouterLinkWithHref_11_3.checkHost(this, this, this._el_11, throwOnChange);
+        this._RouterLinkWithHref_14_3.checkHost(this, this, this._el_14, throwOnChange);
     };
     View_AppComponent0.prototype.destroyInternal = function () {
         this._vc_18.destroyNestedViews();
-        this._RouterLinkWithHref_6_3.ngOnDestroy();
-        this._RouterLinkActive_6_4.ngOnDestroy();
-        this._RouterLinkWithHref_9_3.ngOnDestroy();
-        this._RouterLinkActive_9_4.ngOnDestroy();
-        this._RouterLinkWithHref_12_3.ngOnDestroy();
-        this._RouterLinkActive_12_4.ngOnDestroy();
+        this._RouterLinkWithHref_8_3.ngOnDestroy();
+        this._RouterLinkActive_8_4.ngOnDestroy();
+        this._RouterLinkWithHref_11_3.ngOnDestroy();
+        this._RouterLinkActive_11_4.ngOnDestroy();
+        this._RouterLinkWithHref_14_3.ngOnDestroy();
+        this._RouterLinkActive_14_4.ngOnDestroy();
         this._RouterOutlet_18_5.ngOnDestroy();
     };
-    View_AppComponent0.prototype.handleEvent_6 = function (eventName, $event) {
+    View_AppComponent0.prototype.handleEvent_8 = function (eventName, $event) {
         this.markPathToRootAsCheckOnce();
         var result = true;
-        result = (this._RouterLinkWithHref_6_3.handleEvent(eventName, $event) && result);
+        result = (this._RouterLinkWithHref_8_3.handleEvent(eventName, $event) && result);
         return result;
     };
-    View_AppComponent0.prototype.handleEvent_9 = function (eventName, $event) {
+    View_AppComponent0.prototype.handleEvent_11 = function (eventName, $event) {
         this.markPathToRootAsCheckOnce();
         var result = true;
-        result = (this._RouterLinkWithHref_9_3.handleEvent(eventName, $event) && result);
+        result = (this._RouterLinkWithHref_11_3.handleEvent(eventName, $event) && result);
         return result;
     };
-    View_AppComponent0.prototype.handleEvent_12 = function (eventName, $event) {
+    View_AppComponent0.prototype.handleEvent_14 = function (eventName, $event) {
         this.markPathToRootAsCheckOnce();
         var result = true;
-        result = (this._RouterLinkWithHref_12_3.handleEvent(eventName, $event) && result);
+        result = (this._RouterLinkWithHref_14_3.handleEvent(eventName, $event) && result);
         return result;
     };
     return View_AppComponent0;
