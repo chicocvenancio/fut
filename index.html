@@ -2,6 +2,16 @@
 <head>
     <base href="/">
     <title> Fut app</title>
+    <script>
+      // See http://www.backalleycoder.com/2016/05/13/sghpa-the-single-page-app-hack-for-github-pages/
+      (function(){
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.7.3/zone.min.js"></script>
     <!-- <script src="node_modules/reflect-metadata/Reflect.js"></script> -->
 
