@@ -21425,7 +21425,7 @@ var AppComponent = (function () {
     AppComponent.decorators = [
         { type: Component, args: [{
                     selector: 'fut',
-                    template: "\n    <h1 class=\"title\">Aplicativo de Futebol</h1>\n        <nav class=\"nav\">\n            <a routerLink=\"/fut/jogadores\" routerLinkActive=\"active\">Jogadores</a>\n            <a routerLink=\"/fut/equipes\" routerLinkActive=\"active\" class=\"disabled\">Equipes</a>\n            <a routerLink=\"/fut/competicao\" routerLinkActive=\"active\" class=\"disabled\">Competi\u00E7\u00F5es</a>\n        </nav>\n    <router-outlet></router-outlet>\n    "
+                    template: "\n    <h1 class=\"title\">Aplicativo de Futebol</h1>\n        <nav class=\"nav\">\n            <a routerLink=\"/fut/jogadores\" routerLinkActive=\"active\">Jogadores</a>\n            <a routerLink=\"/fut/equipes\" routerLinkActive=\"active\" class=\"disabled\">Equipes</a>\n            <a routerLink=\"/fut/competicao\" routerLinkActive=\"active\" class=\"disabled\">Competi\u00E7\u00F5es</a>\n        </nav>\n    <div class=\"container-fluid\">    \n        <router-outlet></router-outlet>\n    </div>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -28023,7 +28023,7 @@ var JogadorDetailComponent = (function () {
     JogadorDetailComponent.decorators = [
         { type: Component, args: [{
                     selector: 'fut',
-                    template: "<h1> Aplicativo de Futebol</h1>\n             <div *ngIf=\"jogador\">\n                <h2> Jogador </h2>\n                <h3> {{jogador.nome}}</h3>\n                <textarea type=\"text\" [(ngModel)]= \"jogador.comment\" name=\"comentario\"></textarea>\n            </div>\n           "
+                    template: "\n             <div *ngIf=\"jogador\">\n                <h3> {{jogador.nome}}</h3>\n                <textarea type=\"text\" [(ngModel)]= \"jogador.comment\" name=\"comentario\"></textarea>\n            </div>\n           "
                 },] },
     ];
     /** @nocollapse */
@@ -28054,7 +28054,7 @@ var JogadorListComponent = (function () {
     };
     JogadorListComponent.decorators = [
         { type: Component, args: [{
-                    template: "\n            <table>\n               <thead><th>Nome</th> <th>Posi\u00E7\u00E3o</th> <th>Equipe</th> <th>Pais</th></thead>\n               <tbody><tr *ngFor=\"let jog of jogadores | async\" (click)=\"onSelect(jog)\"> <td ><a class=\"btn\">{{jog.nome}}</a></td><td> {{jog.posicao}}</td> <td> {{jog.equipe}}</td> <td> {{jog.pais}}</td></tr></tbody>\n            </table>\n               "
+                    template: "\n            <table class=\"table\">\n               <thead><th>Nome</th> <th>Posi\u00E7\u00E3o</th> <th>Equipe</th> <th>Pais</th></thead>\n               <tbody><tr *ngFor=\"let jog of jogadores | async\" (click)=\"onSelect(jog)\"> <td ><a class=\"btn\">{{jog.nome}}</a></td><td> {{jog.posicao}}</td> <td> {{jog.equipe}}</td> <td> {{jog.pais}}</td></tr></tbody>\n            </table>\n               "
                 },] },
     ];
     /** @nocollapse */
@@ -28415,44 +28415,40 @@ var View_JogadorDetailComponent0 = (function (_super) {
     }
     View_JogadorDetailComponent0.prototype.createInternal = function (rootSelector) {
         var parentRenderNode = this.renderer.createViewRoot(this.parentElement);
-        this._el_0 = createRenderElement(this.renderer, parentRenderNode, 'h1', EMPTY_INLINE_ARRAY, null);
-        this._text_1 = this.renderer.createText(this._el_0, ' Aplicativo de Futebol', null);
-        this._text_2 = this.renderer.createText(parentRenderNode, '\n             ', null);
-        this._anchor_3 = this.renderer.createTemplateAnchor(parentRenderNode, null);
-        this._vc_3 = new ViewContainer(3, null, this, this._anchor_3);
-        this._TemplateRef_3_5 = new TemplateRef_(this, 3, this._anchor_3);
-        this._NgIf_3_6 = new Wrapper_NgIf(this._vc_3.vcRef, this._TemplateRef_3_5);
-        this._text_4 = this.renderer.createText(parentRenderNode, '\n           ', null);
+        this._text_0 = this.renderer.createText(parentRenderNode, '\n             ', null);
+        this._anchor_1 = this.renderer.createTemplateAnchor(parentRenderNode, null);
+        this._vc_1 = new ViewContainer(1, null, this, this._anchor_1);
+        this._TemplateRef_1_5 = new TemplateRef_(this, 1, this._anchor_1);
+        this._NgIf_1_6 = new Wrapper_NgIf(this._vc_1.vcRef, this._TemplateRef_1_5);
+        this._text_2 = this.renderer.createText(parentRenderNode, '\n           ', null);
         this.init(null, (this.renderer.directRenderer ? null : [
-            this._el_0,
-            this._text_1,
-            this._text_2,
-            this._anchor_3,
-            this._text_4
+            this._text_0,
+            this._anchor_1,
+            this._text_2
         ]), null);
         return null;
     };
     View_JogadorDetailComponent0.prototype.injectorGetInternal = function (token, requestNodeIndex, notFoundResult) {
-        if (((token === TemplateRef) && (3 === requestNodeIndex))) {
-            return this._TemplateRef_3_5;
+        if (((token === TemplateRef) && (1 === requestNodeIndex))) {
+            return this._TemplateRef_1_5;
         }
-        if (((token === NgIf) && (3 === requestNodeIndex))) {
-            return this._NgIf_3_6.context;
+        if (((token === NgIf) && (1 === requestNodeIndex))) {
+            return this._NgIf_1_6.context;
         }
         return notFoundResult;
     };
     View_JogadorDetailComponent0.prototype.detectChangesInternal = function (throwOnChange) {
-        var currVal_3_0_0 = this.context.jogador;
-        this._NgIf_3_6.check_ngIf(currVal_3_0_0, throwOnChange, false);
-        this._NgIf_3_6.ngDoCheck(this, this._anchor_3, throwOnChange);
-        this._vc_3.detectChangesInNestedViews(throwOnChange);
+        var currVal_1_0_0 = this.context.jogador;
+        this._NgIf_1_6.check_ngIf(currVal_1_0_0, throwOnChange, false);
+        this._NgIf_1_6.ngDoCheck(this, this._anchor_1, throwOnChange);
+        this._vc_1.detectChangesInNestedViews(throwOnChange);
     };
     View_JogadorDetailComponent0.prototype.destroyInternal = function () {
-        this._vc_3.destroyNestedViews();
+        this._vc_1.destroyNestedViews();
     };
     View_JogadorDetailComponent0.prototype.createEmbeddedViewInternal = function (nodeIndex) {
-        if ((nodeIndex == 3)) {
-            return new View_JogadorDetailComponent1(this.viewUtils, this, 3, this._anchor_3, this._vc_3);
+        if ((nodeIndex == 1)) {
+            return new View_JogadorDetailComponent1(this.viewUtils, this, 1, this._anchor_1, this._vc_1);
         }
         return null;
     };
@@ -28462,26 +28458,23 @@ var View_JogadorDetailComponent1 = (function (_super) {
     __extends$73(View_JogadorDetailComponent1, _super);
     function View_JogadorDetailComponent1(viewUtils, parentView, parentIndex, parentElement, declaredViewContainer) {
         _super.call(this, View_JogadorDetailComponent1, renderType_JogadorDetailComponent, ViewType.EMBEDDED, viewUtils, parentView, parentIndex, parentElement, ChangeDetectorStatus.CheckAlways, declaredViewContainer);
-        this._expr_15 = UNINITIALIZED;
+        this._expr_12 = UNINITIALIZED;
     }
     View_JogadorDetailComponent1.prototype.createInternal = function (rootSelector) {
         this._el_0 = createRenderElement(this.renderer, null, 'div', EMPTY_INLINE_ARRAY, null);
         this._text_1 = this.renderer.createText(this._el_0, '\n                ', null);
-        this._el_2 = createRenderElement(this.renderer, this._el_0, 'h2', EMPTY_INLINE_ARRAY, null);
-        this._text_3 = this.renderer.createText(this._el_2, ' Jogador ', null);
+        this._el_2 = createRenderElement(this.renderer, this._el_0, 'h3', EMPTY_INLINE_ARRAY, null);
+        this._text_3 = this.renderer.createText(this._el_2, '', null);
         this._text_4 = this.renderer.createText(this._el_0, '\n                ', null);
-        this._el_5 = createRenderElement(this.renderer, this._el_0, 'h3', EMPTY_INLINE_ARRAY, null);
-        this._text_6 = this.renderer.createText(this._el_5, '', null);
-        this._text_7 = this.renderer.createText(this._el_0, '\n                ', null);
-        this._el_8 = createRenderElement(this.renderer, this._el_0, 'textarea', new InlineArray4(4, 'name', 'comentario', 'type', 'text'), null);
-        this._DefaultValueAccessor_8_3 = new Wrapper_DefaultValueAccessor(this.renderer, new ElementRef(this._el_8));
-        this._NG_VALUE_ACCESSOR_8_4 = [this._DefaultValueAccessor_8_3.context];
-        this._NgModel_8_5 = new Wrapper_NgModel(null, null, null, this._NG_VALUE_ACCESSOR_8_4);
-        this._NgControl_8_6 = this._NgModel_8_5.context;
-        this._NgControlStatus_8_7 = new Wrapper_NgControlStatus(this._NgControl_8_6);
-        this._text_9 = this.renderer.createText(this._el_0, '\n            ', null);
-        var disposable_0 = subscribeToRenderElement(this, this._el_8, new InlineArray8(6, 'ngModelChange', null, 'input', null, 'blur', null), this.eventHandler(this.handleEvent_8));
-        this._NgModel_8_5.subscribe(this, this.eventHandler(this.handleEvent_8), true);
+        this._el_5 = createRenderElement(this.renderer, this._el_0, 'textarea', new InlineArray4(4, 'name', 'comentario', 'type', 'text'), null);
+        this._DefaultValueAccessor_5_3 = new Wrapper_DefaultValueAccessor(this.renderer, new ElementRef(this._el_5));
+        this._NG_VALUE_ACCESSOR_5_4 = [this._DefaultValueAccessor_5_3.context];
+        this._NgModel_5_5 = new Wrapper_NgModel(null, null, null, this._NG_VALUE_ACCESSOR_5_4);
+        this._NgControl_5_6 = this._NgModel_5_5.context;
+        this._NgControlStatus_5_7 = new Wrapper_NgControlStatus(this._NgControl_5_6);
+        this._text_6 = this.renderer.createText(this._el_0, '\n            ', null);
+        var disposable_0 = subscribeToRenderElement(this, this._el_5, new InlineArray8(6, 'ngModelChange', null, 'input', null, 'blur', null), this.eventHandler(this.handleEvent_5));
+        this._NgModel_5_5.subscribe(this, this.eventHandler(this.handleEvent_5), true);
         this.init(this._el_0, (this.renderer.directRenderer ? null : [
             this._el_0,
             this._text_1,
@@ -28489,56 +28482,53 @@ var View_JogadorDetailComponent1 = (function (_super) {
             this._text_3,
             this._text_4,
             this._el_5,
-            this._text_6,
-            this._text_7,
-            this._el_8,
-            this._text_9
+            this._text_6
         ]), [disposable_0]);
         return null;
     };
     View_JogadorDetailComponent1.prototype.injectorGetInternal = function (token, requestNodeIndex, notFoundResult) {
-        if (((token === DefaultValueAccessor) && (8 === requestNodeIndex))) {
-            return this._DefaultValueAccessor_8_3.context;
+        if (((token === DefaultValueAccessor) && (5 === requestNodeIndex))) {
+            return this._DefaultValueAccessor_5_3.context;
         }
-        if (((token === NG_VALUE_ACCESSOR) && (8 === requestNodeIndex))) {
-            return this._NG_VALUE_ACCESSOR_8_4;
+        if (((token === NG_VALUE_ACCESSOR) && (5 === requestNodeIndex))) {
+            return this._NG_VALUE_ACCESSOR_5_4;
         }
-        if (((token === NgModel) && (8 === requestNodeIndex))) {
-            return this._NgModel_8_5.context;
+        if (((token === NgModel) && (5 === requestNodeIndex))) {
+            return this._NgModel_5_5.context;
         }
-        if (((token === NgControl) && (8 === requestNodeIndex))) {
-            return this._NgControl_8_6;
+        if (((token === NgControl) && (5 === requestNodeIndex))) {
+            return this._NgControl_5_6;
         }
-        if (((token === NgControlStatus) && (8 === requestNodeIndex))) {
-            return this._NgControlStatus_8_7.context;
+        if (((token === NgControlStatus) && (5 === requestNodeIndex))) {
+            return this._NgControlStatus_5_7.context;
         }
         return notFoundResult;
     };
     View_JogadorDetailComponent1.prototype.detectChangesInternal = function (throwOnChange) {
-        this._DefaultValueAccessor_8_3.ngDoCheck(this, this._el_8, throwOnChange);
-        var currVal_8_1_0 = 'comentario';
-        this._NgModel_8_5.check_name(currVal_8_1_0, throwOnChange, false);
-        var currVal_8_1_1 = this.parentView.context.jogador.comment;
-        this._NgModel_8_5.check_model(currVal_8_1_1, throwOnChange, false);
-        this._NgModel_8_5.ngDoCheck(this, this._el_8, throwOnChange);
-        this._NgControlStatus_8_7.ngDoCheck(this, this._el_8, throwOnChange);
-        var currVal_15 = inlineInterpolate(1, ' ', this.parentView.context.jogador.nome, '');
-        if (checkBinding(throwOnChange, this._expr_15, currVal_15)) {
-            this.renderer.setText(this._text_6, currVal_15);
-            this._expr_15 = currVal_15;
+        this._DefaultValueAccessor_5_3.ngDoCheck(this, this._el_5, throwOnChange);
+        var currVal_5_1_0 = 'comentario';
+        this._NgModel_5_5.check_name(currVal_5_1_0, throwOnChange, false);
+        var currVal_5_1_1 = this.parentView.context.jogador.comment;
+        this._NgModel_5_5.check_model(currVal_5_1_1, throwOnChange, false);
+        this._NgModel_5_5.ngDoCheck(this, this._el_5, throwOnChange);
+        this._NgControlStatus_5_7.ngDoCheck(this, this._el_5, throwOnChange);
+        var currVal_12 = inlineInterpolate(1, ' ', this.parentView.context.jogador.nome, '');
+        if (checkBinding(throwOnChange, this._expr_12, currVal_12)) {
+            this.renderer.setText(this._text_3, currVal_12);
+            this._expr_12 = currVal_12;
         }
-        this._NgControlStatus_8_7.checkHost(this, this, this._el_8, throwOnChange);
+        this._NgControlStatus_5_7.checkHost(this, this, this._el_5, throwOnChange);
     };
     View_JogadorDetailComponent1.prototype.destroyInternal = function () {
-        this._NgModel_8_5.ngOnDestroy();
+        this._NgModel_5_5.ngOnDestroy();
     };
     View_JogadorDetailComponent1.prototype.visitRootNodesInternal = function (cb, ctx) {
         cb(this._el_0, ctx);
     };
-    View_JogadorDetailComponent1.prototype.handleEvent_8 = function (eventName, $event) {
+    View_JogadorDetailComponent1.prototype.handleEvent_5 = function (eventName, $event) {
         this.markPathToRootAsCheckOnce();
         var result = true;
-        result = (this._DefaultValueAccessor_8_3.handleEvent(eventName, $event) && result);
+        result = (this._DefaultValueAccessor_5_3.handleEvent(eventName, $event) && result);
         if ((eventName == 'ngModelChange')) {
             var pd_sub_0 = ((this.parentView.context.jogador.comment = $event) !== false);
             result = (pd_sub_0 && result);
@@ -28699,7 +28689,7 @@ var View_JogadorListComponent0 = (function (_super) {
     View_JogadorListComponent0.prototype.createInternal = function (rootSelector) {
         var parentRenderNode = this.renderer.createViewRoot(this.parentElement);
         this._text_0 = this.renderer.createText(parentRenderNode, '\n            ', null);
-        this._el_1 = createRenderElement(this.renderer, parentRenderNode, 'table', EMPTY_INLINE_ARRAY, null);
+        this._el_1 = createRenderElement(this.renderer, parentRenderNode, 'table', new InlineArray2(2, 'class', 'table'), null);
         this._text_2 = this.renderer.createText(this._el_1, '\n               ', null);
         this._el_3 = createRenderElement(this.renderer, this._el_1, 'thead', EMPTY_INLINE_ARRAY, null);
         this._el_4 = createRenderElement(this.renderer, this._el_3, 'th', EMPTY_INLINE_ARRAY, null);
@@ -29172,10 +29162,13 @@ var View_AppComponent0 = (function (_super) {
         this._text_13 = this.renderer.createText(this._el_12, 'Competições', null);
         this._text_14 = this.renderer.createText(this._el_4, '\n        ', null);
         this._text_15 = this.renderer.createText(parentRenderNode, '\n    ', null);
-        this._el_16 = createRenderElement(this.renderer, parentRenderNode, 'router-outlet', EMPTY_INLINE_ARRAY, null);
-        this._vc_16 = new ViewContainer(16, null, this, this._el_16);
-        this._RouterOutlet_16_5 = new Wrapper_RouterOutlet(this.parentView.injectorGet(RouterOutletMap, this.parentIndex), this._vc_16.vcRef, this.parentView.injectorGet(ComponentFactoryResolver, this.parentIndex), null);
-        this._text_17 = this.renderer.createText(parentRenderNode, '\n    ', null);
+        this._el_16 = createRenderElement(this.renderer, parentRenderNode, 'div', new InlineArray2(2, 'class', 'container-fluid'), null);
+        this._text_17 = this.renderer.createText(this._el_16, '    \n        ', null);
+        this._el_18 = createRenderElement(this.renderer, this._el_16, 'router-outlet', EMPTY_INLINE_ARRAY, null);
+        this._vc_18 = new ViewContainer(18, 16, this, this._el_18);
+        this._RouterOutlet_18_5 = new Wrapper_RouterOutlet(this.parentView.injectorGet(RouterOutletMap, this.parentIndex), this._vc_18.vcRef, this.parentView.injectorGet(ComponentFactoryResolver, this.parentIndex), null);
+        this._text_19 = this.renderer.createText(this._el_16, '\n    ', null);
+        this._text_20 = this.renderer.createText(parentRenderNode, '\n    ', null);
         var disposable_0 = subscribeToRenderElement(this, this._el_6, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_6));
         var disposable_1 = subscribeToRenderElement(this, this._el_9, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_9));
         var disposable_2 = subscribeToRenderElement(this, this._el_12, new InlineArray2(2, 'click', null), this.eventHandler(this.handleEvent_12));
@@ -29197,7 +29190,10 @@ var View_AppComponent0 = (function (_super) {
             this._text_14,
             this._text_15,
             this._el_16,
-            this._text_17
+            this._text_17,
+            this._el_18,
+            this._text_19,
+            this._text_20
         ]), [
             disposable_0,
             disposable_1,
@@ -29224,8 +29220,8 @@ var View_AppComponent0 = (function (_super) {
         if (((token === RouterLinkActive) && ((12 <= requestNodeIndex) && (requestNodeIndex <= 13)))) {
             return this._RouterLinkActive_12_4.context;
         }
-        if (((token === RouterOutlet) && (16 === requestNodeIndex))) {
-            return this._RouterOutlet_16_5.context;
+        if (((token === RouterOutlet) && (18 === requestNodeIndex))) {
+            return this._RouterOutlet_18_5.context;
         }
         return notFoundResult;
     };
@@ -29248,8 +29244,8 @@ var View_AppComponent0 = (function (_super) {
         var currVal_12_1_0 = 'active';
         this._RouterLinkActive_12_4.check_routerLinkActive(currVal_12_1_0, throwOnChange, false);
         this._RouterLinkActive_12_4.ngDoCheck(this, this._el_12, throwOnChange);
-        this._RouterOutlet_16_5.ngDoCheck(this, this._el_16, throwOnChange);
-        this._vc_16.detectChangesInNestedViews(throwOnChange);
+        this._RouterOutlet_18_5.ngDoCheck(this, this._el_18, throwOnChange);
+        this._vc_18.detectChangesInNestedViews(throwOnChange);
         if (!throwOnChange) {
             if (this._query_RouterLink_6_0.dirty) {
                 this._query_RouterLink_6_0.reset([]);
@@ -29296,14 +29292,14 @@ var View_AppComponent0 = (function (_super) {
         this._RouterLinkWithHref_12_3.checkHost(this, this, this._el_12, throwOnChange);
     };
     View_AppComponent0.prototype.destroyInternal = function () {
-        this._vc_16.destroyNestedViews();
+        this._vc_18.destroyNestedViews();
         this._RouterLinkWithHref_6_3.ngOnDestroy();
         this._RouterLinkActive_6_4.ngOnDestroy();
         this._RouterLinkWithHref_9_3.ngOnDestroy();
         this._RouterLinkActive_9_4.ngOnDestroy();
         this._RouterLinkWithHref_12_3.ngOnDestroy();
         this._RouterLinkActive_12_4.ngOnDestroy();
-        this._RouterOutlet_16_5.ngOnDestroy();
+        this._RouterOutlet_18_5.ngOnDestroy();
     };
     View_AppComponent0.prototype.handleEvent_6 = function (eventName, $event) {
         this.markPathToRootAsCheckOnce();
