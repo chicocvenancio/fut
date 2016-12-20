@@ -28065,9 +28065,9 @@ var JogadorListComponent = (function () {
 }());
 
 var appRoutes = [
-    { path: 'jogador/:id', component: JogadorDetailComponent },
-    { path: 'jogadores', component: JogadorListComponent },
-    { path: '', redirectTo: 'jogadores' }
+    { path: 'fut/jogador/:id', component: JogadorDetailComponent },
+    { path: 'fut/jogadores', component: JogadorListComponent },
+    { path: 'fut', redirectTo: 'jogadores', pathMatch: 'full' }
 ];
 var AppModule = (function () {
     function AppModule() {
@@ -29532,16 +29532,17 @@ var AppModuleInjector = (function (_super) {
             if ((this.__ROUTES_39 == null)) {
                 (this.__ROUTES_39 = [[
                         {
-                            path: 'jogador/:id',
+                            path: 'fut/jogador/:id',
                             component: JogadorDetailComponent
                         },
                         {
-                            path: 'jogadores',
+                            path: 'fut/jogadores',
                             component: JogadorListComponent
                         },
                         {
-                            path: '',
-                            redirectTo: 'jogadores'
+                            path: 'fut',
+                            redirectTo: 'jogadores',
+                            pathMatch: 'full'
                         }
                     ]
                 ]);
