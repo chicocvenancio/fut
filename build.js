@@ -21425,7 +21425,7 @@ var AppComponent = (function () {
     AppComponent.decorators = [
         { type: Component, args: [{
                     selector: 'fut',
-                    template: "\n    <h1 class=\"title\">Aplicativo de Futebol</h1>\n        <nav>\n            <a routerLink=\"/fut/jogadores\" routerLinkActive=\"active\">Jogadores</a>\n            <a routerLink=\"/fut/equipes\" routerLinkActive=\"active\">Equipes</a>\n            <a routerLink=\"/fut/competicao\" routerLinkActive=\"active\">Competi\u00E7\u00F5es</a>\n        </nav>\n    <router-outlet></router-outlet>\n    "
+                    template: "\n    <h1 class=\"title\">Aplicativo de Futebol</h1>\n        <nav class=\"nav\">\n            <a routerLink=\"/fut/jogadores\" routerLinkActive=\"active\">Jogadores</a>\n            <a routerLink=\"/fut/equipes\" routerLinkActive=\"active\" class=\"disabled\">Equipes</a>\n            <a routerLink=\"/fut/competicao\" routerLinkActive=\"active\" class=\"disabled\">Competi\u00E7\u00F5es</a>\n        </nav>\n    <router-outlet></router-outlet>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -28054,7 +28054,7 @@ var JogadorListComponent = (function () {
     };
     JogadorListComponent.decorators = [
         { type: Component, args: [{
-                    template: "\n            <table>\n               <thead><th>Nome</th> <th>Posi\u00E7\u00E3o</th> <th>Equipe</th> <th>Pais</th></thead>\n               <tbody><tr *ngFor=\"let jog of jogadores | async\" (click)=\"onSelect(jog)\"> <td  ><a >{{jog.nome}}</a></td><td> {{jog.posicao}}</td> <td> {{jog.equipe}}</td> <td> {{jog.pais}}</td></tr></tbody>\n            </table>\n               "
+                    template: "\n            <table>\n               <thead><th>Nome</th> <th>Posi\u00E7\u00E3o</th> <th>Equipe</th> <th>Pais</th></thead>\n               <tbody><tr *ngFor=\"let jog of jogadores | async\" (click)=\"onSelect(jog)\"> <td ><a class=\"btn\">{{jog.nome}}</a></td><td> {{jog.posicao}}</td> <td> {{jog.equipe}}</td> <td> {{jog.pais}}</td></tr></tbody>\n            </table>\n               "
                 },] },
     ];
     /** @nocollapse */
@@ -28788,7 +28788,7 @@ var View_JogadorListComponent1 = (function (_super) {
         this._el_0 = createRenderElement(this.renderer, null, 'tr', EMPTY_INLINE_ARRAY, null);
         this._text_1 = this.renderer.createText(this._el_0, ' ', null);
         this._el_2 = createRenderElement(this.renderer, this._el_0, 'td', EMPTY_INLINE_ARRAY, null);
-        this._el_3 = createRenderElement(this.renderer, this._el_2, 'a', EMPTY_INLINE_ARRAY, null);
+        this._el_3 = createRenderElement(this.renderer, this._el_2, 'a', new InlineArray2(2, 'class', 'btn'), null);
         this._text_4 = this.renderer.createText(this._el_3, '', null);
         this._el_5 = createRenderElement(this.renderer, this._el_0, 'td', EMPTY_INLINE_ARRAY, null);
         this._text_6 = this.renderer.createText(this._el_5, '', null);
@@ -29148,7 +29148,7 @@ var View_AppComponent0 = (function (_super) {
         this._el_1 = createRenderElement(this.renderer, parentRenderNode, 'h1', new InlineArray2(2, 'class', 'title'), null);
         this._text_2 = this.renderer.createText(this._el_1, 'Aplicativo de Futebol', null);
         this._text_3 = this.renderer.createText(parentRenderNode, '\n        ', null);
-        this._el_4 = createRenderElement(this.renderer, parentRenderNode, 'nav', EMPTY_INLINE_ARRAY, null);
+        this._el_4 = createRenderElement(this.renderer, parentRenderNode, 'nav', new InlineArray2(2, 'class', 'nav'), null);
         this._text_5 = this.renderer.createText(this._el_4, '\n            ', null);
         this._el_6 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/fut/jogadores', 'routerLinkActive', 'active'), null);
         this._RouterLinkWithHref_6_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
@@ -29157,14 +29157,14 @@ var View_AppComponent0 = (function (_super) {
         this._query_RouterLinkWithHref_6_1 = new QueryList();
         this._text_7 = this.renderer.createText(this._el_6, 'Jogadores', null);
         this._text_8 = this.renderer.createText(this._el_4, '\n            ', null);
-        this._el_9 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/fut/equipes', 'routerLinkActive', 'active'), null);
+        this._el_9 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray8(6, 'class', 'disabled', 'routerLink', '/fut/equipes', 'routerLinkActive', 'active'), null);
         this._RouterLinkWithHref_9_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
         this._RouterLinkActive_9_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_9), this.renderer);
         this._query_RouterLink_9_0 = new QueryList();
         this._query_RouterLinkWithHref_9_1 = new QueryList();
         this._text_10 = this.renderer.createText(this._el_9, 'Equipes', null);
         this._text_11 = this.renderer.createText(this._el_4, '\n            ', null);
-        this._el_12 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/fut/competicao', 'routerLinkActive', 'active'), null);
+        this._el_12 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray8(6, 'class', 'disabled', 'routerLink', '/fut/competicao', 'routerLinkActive', 'active'), null);
         this._RouterLinkWithHref_12_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
         this._RouterLinkActive_12_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_12), this.renderer);
         this._query_RouterLink_12_0 = new QueryList();
