@@ -21433,73 +21433,38 @@ var AppComponent = (function () {
     return AppComponent;
 }());
 
-var JOGADORES = [{ id: 1, nome: "joão teste", posicao: "atacante", equipe: "Vasco", pais: "Brasil" },
-    { id: 2, nome: "Carlos Germano", posicao: "goleiro", equipe: "Vasco", pais: "Brasil", comment: "Ágil, boa reposição de bola" }
-];
-var jogadoresPromise = Promise.resolve(JOGADORES);
-var JogadorService = (function () {
-    function JogadorService() {
-    }
-    JogadorService.prototype.getJogadores = function () { return jogadoresPromise; };
-    JogadorService.prototype.getJogador = function (id) {
-        return jogadoresPromise
-            .then(function (jogadores) { return jogadores.find(function (jogador) { return jogador.id === +id; }); });
-    };
-    JogadorService.decorators = [
-        { type: Injectable },
-    ];
-    /** @nocollapse */
-    JogadorService.ctorParameters = [];
-    return JogadorService;
-}());
-
-var __extends$50 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$51 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Subject_1$2 = Subject_1;
-var ObjectUnsubscribedError_1$3 = ObjectUnsubscribedError_1$1;
+var Subscriber_1$4 = Subscriber_1$2;
 /**
- * @class BehaviorSubject<T>
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
  */
-var BehaviorSubject = (function (_super) {
-    __extends$50(BehaviorSubject, _super);
-    function BehaviorSubject(_value) {
-        _super.call(this);
-        this._value = _value;
+var OuterSubscriber = (function (_super) {
+    __extends$51(OuterSubscriber, _super);
+    function OuterSubscriber() {
+        _super.apply(this, arguments);
     }
-    Object.defineProperty(BehaviorSubject.prototype, "value", {
-        get: function () {
-            return this.getValue();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BehaviorSubject.prototype._subscribe = function (subscriber) {
-        var subscription = _super.prototype._subscribe.call(this, subscriber);
-        if (subscription && !subscription.closed) {
-            subscriber.next(this._value);
-        }
-        return subscription;
+    OuterSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        this.destination.next(innerValue);
     };
-    BehaviorSubject.prototype.getValue = function () {
-        if (this.hasError) {
-            throw this.thrownError;
-        }
-        else if (this.closed) {
-            throw new ObjectUnsubscribedError_1$3.ObjectUnsubscribedError();
-        }
-        else {
-            return this._value;
-        }
+    OuterSubscriber.prototype.notifyError = function (error, innerSub) {
+        this.destination.error(error);
     };
-    BehaviorSubject.prototype.next = function (value) {
-        _super.prototype.next.call(this, this._value = value);
+    OuterSubscriber.prototype.notifyComplete = function (innerSub) {
+        this.destination.complete();
     };
-    return BehaviorSubject;
-}(Subject_1$2.Subject));
-var BehaviorSubject_2 = BehaviorSubject;
+    return OuterSubscriber;
+}(Subscriber_1$4.Subscriber));
+var OuterSubscriber_2 = OuterSubscriber;
+
+var OuterSubscriber_1$1 = {
+	OuterSubscriber: OuterSubscriber_2
+};
 
 function isPromise$3(value) {
     return value && typeof value.subscribe !== 'function' && typeof value.then === 'function';
@@ -21549,16 +21514,348 @@ var __extends$52 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, 
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Subscriber_1$5 = Subscriber_1$2;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var InnerSubscriber = (function (_super) {
+    __extends$52(InnerSubscriber, _super);
+    function InnerSubscriber(parent, outerValue, outerIndex) {
+        _super.call(this);
+        this.parent = parent;
+        this.outerValue = outerValue;
+        this.outerIndex = outerIndex;
+        this.index = 0;
+    }
+    InnerSubscriber.prototype._next = function (value) {
+        this.parent.notifyNext(this.outerValue, value, this.outerIndex, this.index++, this);
+    };
+    InnerSubscriber.prototype._error = function (error) {
+        this.parent.notifyError(error, this);
+        this.unsubscribe();
+    };
+    InnerSubscriber.prototype._complete = function () {
+        this.parent.notifyComplete(this);
+        this.unsubscribe();
+    };
+    return InnerSubscriber;
+}(Subscriber_1$5.Subscriber));
+var InnerSubscriber_2 = InnerSubscriber;
+
+var InnerSubscriber_1$1 = {
+	InnerSubscriber: InnerSubscriber_2
+};
+
 var root_1$6 = root;
+var isArray_1$2 = isArray;
+var isPromise_1 = isPromise_1$1;
 var Observable_1$5 = Observable_1$1;
-var iterator_1$1 = iterator;
+var iterator_1 = iterator;
+var InnerSubscriber_1 = InnerSubscriber_1$1;
+var observable_1$1 = observable;
+function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
+    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
+    if (destination.closed) {
+        return null;
+    }
+    if (result instanceof Observable_1$5.Observable) {
+        if (result._isScalar) {
+            destination.next(result.value);
+            destination.complete();
+            return null;
+        }
+        else {
+            return result.subscribe(destination);
+        }
+    }
+    if (isArray_1$2.isArray(result)) {
+        for (var i = 0, len = result.length; i < len && !destination.closed; i++) {
+            destination.next(result[i]);
+        }
+        if (!destination.closed) {
+            destination.complete();
+        }
+    }
+    else if (isPromise_1.isPromise(result)) {
+        result.then(function (value) {
+            if (!destination.closed) {
+                destination.next(value);
+                destination.complete();
+            }
+        }, function (err) { return destination.error(err); })
+            .then(null, function (err) {
+            // Escaping the Promise trap: globally throw unhandled errors
+            root_1$6.root.setTimeout(function () { throw err; });
+        });
+        return destination;
+    }
+    else if (typeof result[iterator_1.$$iterator] === 'function') {
+        var iterator$$1 = result[iterator_1.$$iterator]();
+        do {
+            var item = iterator$$1.next();
+            if (item.done) {
+                destination.complete();
+                break;
+            }
+            destination.next(item.value);
+            if (destination.closed) {
+                break;
+            }
+        } while (true);
+    }
+    else if (typeof result[observable_1$1.$$observable] === 'function') {
+        var obs = result[observable_1$1.$$observable]();
+        if (typeof obs.subscribe !== 'function') {
+            destination.error(new Error('invalid observable'));
+        }
+        else {
+            return obs.subscribe(new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex));
+        }
+    }
+    else {
+        destination.error(new TypeError('unknown type returned'));
+    }
+    return null;
+}
+var subscribeToResult_2 = subscribeToResult;
+
+var subscribeToResult_1$1 = {
+	subscribeToResult: subscribeToResult_2
+};
+
+var __extends$50 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var OuterSubscriber_1 = OuterSubscriber_1$1;
+var subscribeToResult_1 = subscribeToResult_1$1;
+/**
+ * Projects each source value to an Observable which is merged in the output
+ * Observable, emitting values only from the most recently projected Observable.
+ *
+ * <span class="informal">Maps each value to an Observable, then flattens all of
+ * these inner Observables using {@link switch}.</span>
+ *
+ * <img src="./img/switchMap.png" width="100%">
+ *
+ * Returns an Observable that emits items based on applying a function that you
+ * supply to each item emitted by the source Observable, where that function
+ * returns an (so-called "inner") Observable. Each time it observes one of these
+ * inner Observables, the output Observable begins emitting the items emitted by
+ * that inner Observable. When a new inner Observable is emitted, `switchMap`
+ * stops emitting items from the earlier-emitted inner Observable and begins
+ * emitting items from the new one. It continues to behave like this for
+ * subsequent inner Observables.
+ *
+ * @example <caption>Rerun an interval Observable on every click event</caption>
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.switchMap((ev) => Rx.Observable.interval(1000));
+ * result.subscribe(x => console.log(x));
+ *
+ * @see {@link concatMap}
+ * @see {@link exhaustMap}
+ * @see {@link mergeMap}
+ * @see {@link switch}
+ * @see {@link switchMapTo}
+ *
+ * @param {function(value: T, ?index: number): Observable} project A function
+ * that, when applied to an item emitted by the source Observable, returns an
+ * Observable.
+ * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
+ * A function to produce the value on the output Observable based on the values
+ * and the indices of the source (outer) emission and the inner Observable
+ * emission. The arguments passed to this function are:
+ * - `outerValue`: the value that came from the source
+ * - `innerValue`: the value that came from the projected Observable
+ * - `outerIndex`: the "index" of the value that came from the source
+ * - `innerIndex`: the "index" of the value from the projected Observable
+ * @return {Observable} An Observable that emits the result of applying the
+ * projection function (and the optional `resultSelector`) to each item emitted
+ * by the source Observable and taking only the values from the most recently
+ * projected inner Observable.
+ * @method switchMap
+ * @owner Observable
+ */
+function switchMap$2(project, resultSelector) {
+    return this.lift(new SwitchMapOperator(project, resultSelector));
+}
+var switchMap_2 = switchMap$2;
+var SwitchMapOperator = (function () {
+    function SwitchMapOperator(project, resultSelector) {
+        this.project = project;
+        this.resultSelector = resultSelector;
+    }
+    SwitchMapOperator.prototype.call = function (subscriber, source) {
+        return source._subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
+    };
+    return SwitchMapOperator;
+}());
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var SwitchMapSubscriber = (function (_super) {
+    __extends$50(SwitchMapSubscriber, _super);
+    function SwitchMapSubscriber(destination, project, resultSelector) {
+        _super.call(this, destination);
+        this.project = project;
+        this.resultSelector = resultSelector;
+        this.index = 0;
+    }
+    SwitchMapSubscriber.prototype._next = function (value) {
+        var result;
+        var index = this.index++;
+        try {
+            result = this.project(value, index);
+        }
+        catch (error) {
+            this.destination.error(error);
+            return;
+        }
+        this._innerSub(result, value, index);
+    };
+    SwitchMapSubscriber.prototype._innerSub = function (result, value, index) {
+        var innerSubscription = this.innerSubscription;
+        if (innerSubscription) {
+            innerSubscription.unsubscribe();
+        }
+        this.add(this.innerSubscription = subscribeToResult_1.subscribeToResult(this, result, value, index));
+    };
+    SwitchMapSubscriber.prototype._complete = function () {
+        var innerSubscription = this.innerSubscription;
+        if (!innerSubscription || innerSubscription.closed) {
+            _super.prototype._complete.call(this);
+        }
+    };
+    SwitchMapSubscriber.prototype._unsubscribe = function () {
+        this.innerSubscription = null;
+    };
+    SwitchMapSubscriber.prototype.notifyComplete = function (innerSub) {
+        this.remove(innerSub);
+        this.innerSubscription = null;
+        if (this.isStopped) {
+            _super.prototype._complete.call(this);
+        }
+    };
+    SwitchMapSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        if (this.resultSelector) {
+            this._tryNotifyNext(outerValue, innerValue, outerIndex, innerIndex);
+        }
+        else {
+            this.destination.next(innerValue);
+        }
+    };
+    SwitchMapSubscriber.prototype._tryNotifyNext = function (outerValue, innerValue, outerIndex, innerIndex) {
+        var result;
+        try {
+            result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+        }
+        catch (err) {
+            this.destination.error(err);
+            return;
+        }
+        this.destination.next(result);
+    };
+    return SwitchMapSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
+
+var switchMap_1$1 = {
+	switchMap: switchMap_2
+};
+
+var Observable_1$4 = Observable_1$1;
+var switchMap_1 = switchMap_1$1;
+Observable_1$4.Observable.prototype.switchMap = switchMap_1.switchMap;
+
+var JOGADORES = [
+    { id: 1, nome: "joão teste", posicao: "atacante", equipe: "Vasco", pais: "Brasil" },
+    { id: 2, nome: "Carlos Germano", posicao: "goleiro", equipe: "Vasco", pais: "Brasil", comment: "Ágil, boa reposição de bola" },
+    { id: 3, nome: "Edu Dracena", posicao: "zagueiro", equipe: "Palmeiras", pais: "Brasil", comment: "Forte, " }
+];
+var jogadoresPromise = Promise.resolve(JOGADORES);
+var JogadorService = (function () {
+    function JogadorService() {
+    }
+    JogadorService.prototype.getJogadores = function () { return jogadoresPromise; };
+    JogadorService.prototype.getJogador = function (id) {
+        return jogadoresPromise
+            .then(function (jogadores) { return jogadores.find(function (jogador) { return jogador.id === +id; }); });
+    };
+    JogadorService.decorators = [
+        { type: Injectable },
+    ];
+    /** @nocollapse */
+    JogadorService.ctorParameters = [];
+    return JogadorService;
+}());
+
+var __extends$53 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subject_1$2 = Subject_1;
+var ObjectUnsubscribedError_1$3 = ObjectUnsubscribedError_1$1;
+/**
+ * @class BehaviorSubject<T>
+ */
+var BehaviorSubject = (function (_super) {
+    __extends$53(BehaviorSubject, _super);
+    function BehaviorSubject(_value) {
+        _super.call(this);
+        this._value = _value;
+    }
+    Object.defineProperty(BehaviorSubject.prototype, "value", {
+        get: function () {
+            return this.getValue();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BehaviorSubject.prototype._subscribe = function (subscriber) {
+        var subscription = _super.prototype._subscribe.call(this, subscriber);
+        if (subscription && !subscription.closed) {
+            subscriber.next(this._value);
+        }
+        return subscription;
+    };
+    BehaviorSubject.prototype.getValue = function () {
+        if (this.hasError) {
+            throw this.thrownError;
+        }
+        else if (this.closed) {
+            throw new ObjectUnsubscribedError_1$3.ObjectUnsubscribedError();
+        }
+        else {
+            return this._value;
+        }
+    };
+    BehaviorSubject.prototype.next = function (value) {
+        _super.prototype.next.call(this, this._value = value);
+    };
+    return BehaviorSubject;
+}(Subject_1$2.Subject));
+var BehaviorSubject_2 = BehaviorSubject;
+
+var __extends$55 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var root_1$7 = root;
+var Observable_1$7 = Observable_1$1;
+var iterator_1$2 = iterator;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
 var IteratorObservable = (function (_super) {
-    __extends$52(IteratorObservable, _super);
+    __extends$55(IteratorObservable, _super);
     function IteratorObservable(iterator$$1, scheduler) {
         _super.call(this);
         this.scheduler = scheduler;
@@ -21613,7 +21910,7 @@ var IteratorObservable = (function (_super) {
         }
     };
     return IteratorObservable;
-}(Observable_1$5.Observable));
+}(Observable_1$7.Observable));
 var IteratorObservable_2 = IteratorObservable;
 var StringIterator = (function () {
     function StringIterator(str, idx, len) {
@@ -21623,7 +21920,7 @@ var StringIterator = (function () {
         this.idx = idx;
         this.len = len;
     }
-    StringIterator.prototype[iterator_1$1.$$iterator] = function () { return (this); };
+    StringIterator.prototype[iterator_1$2.$$iterator] = function () { return (this); };
     StringIterator.prototype.next = function () {
         return this.idx < this.len ? {
             done: false,
@@ -21643,7 +21940,7 @@ var ArrayIterator = (function () {
         this.idx = idx;
         this.len = len;
     }
-    ArrayIterator.prototype[iterator_1$1.$$iterator] = function () { return this; };
+    ArrayIterator.prototype[iterator_1$2.$$iterator] = function () { return this; };
     ArrayIterator.prototype.next = function () {
         return this.idx < this.len ? {
             done: false,
@@ -21656,7 +21953,7 @@ var ArrayIterator = (function () {
     return ArrayIterator;
 }());
 function getIterator(obj) {
-    var i = obj[iterator_1$1.$$iterator];
+    var i = obj[iterator_1$2.$$iterator];
     if (!i && typeof obj === 'string') {
         return new StringIterator(obj);
     }
@@ -21666,7 +21963,7 @@ function getIterator(obj) {
     if (!i) {
         throw new TypeError('object is not iterable');
     }
-    return obj[iterator_1$1.$$iterator]();
+    return obj[iterator_1$2.$$iterator]();
 }
 var maxSafeInteger = Math.pow(2, 53) - 1;
 function toLength(o) {
@@ -21687,7 +21984,7 @@ function toLength(o) {
     return len;
 }
 function numberIsFinite(value) {
-    return typeof value === 'number' && root_1$6.root.isFinite(value);
+    return typeof value === 'number' && root_1$7.root.isFinite(value);
 }
 function sign(value) {
     var valueAsNumber = +value;
@@ -21704,19 +22001,19 @@ var IteratorObservable_1$1 = {
 	IteratorObservable: IteratorObservable_2
 };
 
-var __extends$54 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$57 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1$7 = Observable_1$1;
+var Observable_1$9 = Observable_1$1;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
 var ScalarObservable = (function (_super) {
-    __extends$54(ScalarObservable, _super);
+    __extends$57(ScalarObservable, _super);
     function ScalarObservable(value, scheduler) {
         _super.call(this);
         this.value = value;
@@ -21758,26 +22055,26 @@ var ScalarObservable = (function (_super) {
         }
     };
     return ScalarObservable;
-}(Observable_1$7.Observable));
+}(Observable_1$9.Observable));
 var ScalarObservable_2 = ScalarObservable;
 
 var ScalarObservable_1$1 = {
 	ScalarObservable: ScalarObservable_2
 };
 
-var __extends$55 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$58 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1$8 = Observable_1$1;
+var Observable_1$10 = Observable_1$1;
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
  * @hide true
  */
 var EmptyObservable = (function (_super) {
-    __extends$55(EmptyObservable, _super);
+    __extends$58(EmptyObservable, _super);
     function EmptyObservable(scheduler) {
         _super.call(this);
         this.scheduler = scheduler;
@@ -21836,7 +22133,7 @@ var EmptyObservable = (function (_super) {
         }
     };
     return EmptyObservable;
-}(Observable_1$8.Observable));
+}(Observable_1$10.Observable));
 var EmptyObservable_2 = EmptyObservable;
 
 var EmptyObservable_1$1 = {
@@ -21852,12 +22149,12 @@ var isScheduler_1$1 = {
 	isScheduler: isScheduler_2
 };
 
-var __extends$53 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$56 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1$6 = Observable_1$1;
+var Observable_1$8 = Observable_1$1;
 var ScalarObservable_1 = ScalarObservable_1$1;
 var EmptyObservable_1 = EmptyObservable_1$1;
 var isScheduler_1 = isScheduler_1$1;
@@ -21867,7 +22164,7 @@ var isScheduler_1 = isScheduler_1$1;
  * @hide true
  */
 var ArrayObservable = (function (_super) {
-    __extends$53(ArrayObservable, _super);
+    __extends$56(ArrayObservable, _super);
     function ArrayObservable(array, scheduler) {
         _super.call(this);
         this.array = array;
@@ -21970,19 +22267,19 @@ var ArrayObservable = (function (_super) {
         }
     };
     return ArrayObservable;
-}(Observable_1$6.Observable));
+}(Observable_1$8.Observable));
 var ArrayObservable_2 = ArrayObservable;
 
 var ArrayObservable_1$1 = {
 	ArrayObservable: ArrayObservable_2
 };
 
-var __extends$56 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$59 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1$9 = Observable_1$1;
+var Observable_1$11 = Observable_1$1;
 var ScalarObservable_1$3 = ScalarObservable_1$1;
 var EmptyObservable_1$3 = EmptyObservable_1$1;
 /**
@@ -21991,7 +22288,7 @@ var EmptyObservable_1$3 = EmptyObservable_1$1;
  * @hide true
  */
 var ArrayLikeObservable = (function (_super) {
-    __extends$56(ArrayLikeObservable, _super);
+    __extends$59(ArrayLikeObservable, _super);
     function ArrayLikeObservable(arrayLike, scheduler) {
         _super.call(this);
         this.arrayLike = arrayLike;
@@ -22043,14 +22340,14 @@ var ArrayLikeObservable = (function (_super) {
         }
     };
     return ArrayLikeObservable;
-}(Observable_1$9.Observable));
+}(Observable_1$11.Observable));
 var ArrayLikeObservable_2 = ArrayLikeObservable;
 
 var ArrayLikeObservable_1$1 = {
 	ArrayLikeObservable: ArrayLikeObservable_2
 };
 
-var Observable_1$10 = Observable_1$1;
+var Observable_1$12 = Observable_1$1;
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.
  * This class is particularly useful for operators that manage notifications,
@@ -22132,11 +22429,11 @@ var Notification = (function () {
         var kind = this.kind;
         switch (kind) {
             case 'N':
-                return Observable_1$10.Observable.of(this.value);
+                return Observable_1$12.Observable.of(this.value);
             case 'E':
-                return Observable_1$10.Observable.throw(this.exception);
+                return Observable_1$12.Observable.throw(this.exception);
             case 'C':
-                return Observable_1$10.Observable.empty();
+                return Observable_1$12.Observable.empty();
         }
         throw new Error('unexpected notification kind value');
     };
@@ -22180,12 +22477,12 @@ var Notification_1$1 = {
 	Notification: Notification_2
 };
 
-var __extends$57 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$60 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Subscriber_1$4 = Subscriber_1$2;
+var Subscriber_1$6 = Subscriber_1$2;
 var Notification_1 = Notification_1$1;
 /**
  * @see {@link Notification}
@@ -22219,7 +22516,7 @@ var ObserveOnOperator_1 = ObserveOnOperator;
  * @extends {Ignored}
  */
 var ObserveOnSubscriber = (function (_super) {
-    __extends$57(ObserveOnSubscriber, _super);
+    __extends$60(ObserveOnSubscriber, _super);
     function ObserveOnSubscriber(destination, scheduler, delay) {
         if (delay === void 0) { delay = 0; }
         _super.call(this, destination);
@@ -22243,7 +22540,7 @@ var ObserveOnSubscriber = (function (_super) {
         this.scheduleMessage(Notification_1.Notification.createComplete());
     };
     return ObserveOnSubscriber;
-}(Subscriber_1$4.Subscriber));
+}(Subscriber_1$6.Subscriber));
 var ObserveOnSubscriber_1 = ObserveOnSubscriber;
 var ObserveOnMessage = (function () {
     function ObserveOnMessage(notification, destination) {
@@ -22261,21 +22558,21 @@ var observeOn_1$1 = {
 	ObserveOnMessage: ObserveOnMessage_1
 };
 
-var __extends$51 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$54 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isArray_1$2 = isArray;
-var isPromise_1 = isPromise_1$1;
+var isArray_1$3 = isArray;
+var isPromise_1$3 = isPromise_1$1;
 var PromiseObservable_1$3 = PromiseObservable_1$1;
 var IteratorObservable_1 = IteratorObservable_1$1;
 var ArrayObservable_1 = ArrayObservable_1$1;
 var ArrayLikeObservable_1 = ArrayLikeObservable_1$1;
-var iterator_1 = iterator;
-var Observable_1$4 = Observable_1$1;
+var iterator_1$1 = iterator;
+var Observable_1$6 = Observable_1$1;
 var observeOn_1 = observeOn_1$1;
-var observable_1$1 = observable;
+var observable_1$2 = observable;
 var isArrayLike = (function (x) { return x && typeof x.length === 'number'; });
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -22283,7 +22580,7 @@ var isArrayLike = (function (x) { return x && typeof x.length === 'number'; });
  * @hide true
  */
 var FromObservable = (function (_super) {
-    __extends$51(FromObservable, _super);
+    __extends$54(FromObservable, _super);
     function FromObservable(ish, scheduler) {
         _super.call(this, null);
         this.ish = ish;
@@ -22341,19 +22638,19 @@ var FromObservable = (function (_super) {
      */
     FromObservable.create = function (ish, scheduler) {
         if (ish != null) {
-            if (typeof ish[observable_1$1.$$observable] === 'function') {
-                if (ish instanceof Observable_1$4.Observable && !scheduler) {
+            if (typeof ish[observable_1$2.$$observable] === 'function') {
+                if (ish instanceof Observable_1$6.Observable && !scheduler) {
                     return ish;
                 }
                 return new FromObservable(ish, scheduler);
             }
-            else if (isArray_1$2.isArray(ish)) {
+            else if (isArray_1$3.isArray(ish)) {
                 return new ArrayObservable_1.ArrayObservable(ish, scheduler);
             }
-            else if (isPromise_1.isPromise(ish)) {
+            else if (isPromise_1$3.isPromise(ish)) {
                 return new PromiseObservable_1$3.PromiseObservable(ish, scheduler);
             }
-            else if (typeof ish[iterator_1.$$iterator] === 'function' || typeof ish === 'string') {
+            else if (typeof ish[iterator_1$1.$$iterator] === 'function' || typeof ish === 'string') {
                 return new IteratorObservable_1.IteratorObservable(ish, scheduler);
             }
             else if (isArrayLike(ish)) {
@@ -22366,14 +22663,14 @@ var FromObservable = (function (_super) {
         var ish = this.ish;
         var scheduler = this.scheduler;
         if (scheduler == null) {
-            return ish[observable_1$1.$$observable]().subscribe(subscriber);
+            return ish[observable_1$2.$$observable]().subscribe(subscriber);
         }
         else {
-            return ish[observable_1$1.$$observable]().subscribe(new observeOn_1.ObserveOnSubscriber(subscriber, scheduler, 0));
+            return ish[observable_1$2.$$observable]().subscribe(new observeOn_1.ObserveOnSubscriber(subscriber, scheduler, 0));
         }
     };
     return FromObservable;
-}(Observable_1$4.Observable));
+}(Observable_1$6.Observable));
 var FromObservable_2 = FromObservable;
 
 var FromObservable_1$1 = {
@@ -22386,162 +22683,13 @@ var from_1 = FromObservable_1.FromObservable.create;
 var ArrayObservable_1$3 = ArrayObservable_1$1;
 var of_1 = ArrayObservable_1$3.ArrayObservable.of;
 
-var __extends$59 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$61 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Subscriber_1$5 = Subscriber_1$2;
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-var InnerSubscriber = (function (_super) {
-    __extends$59(InnerSubscriber, _super);
-    function InnerSubscriber(parent, outerValue, outerIndex) {
-        _super.call(this);
-        this.parent = parent;
-        this.outerValue = outerValue;
-        this.outerIndex = outerIndex;
-        this.index = 0;
-    }
-    InnerSubscriber.prototype._next = function (value) {
-        this.parent.notifyNext(this.outerValue, value, this.outerIndex, this.index++, this);
-    };
-    InnerSubscriber.prototype._error = function (error) {
-        this.parent.notifyError(error, this);
-        this.unsubscribe();
-    };
-    InnerSubscriber.prototype._complete = function () {
-        this.parent.notifyComplete(this);
-        this.unsubscribe();
-    };
-    return InnerSubscriber;
-}(Subscriber_1$5.Subscriber));
-var InnerSubscriber_2 = InnerSubscriber;
-
-var InnerSubscriber_1$1 = {
-	InnerSubscriber: InnerSubscriber_2
-};
-
-var root_1$7 = root;
-var isArray_1$3 = isArray;
-var isPromise_1$3 = isPromise_1$1;
-var Observable_1$11 = Observable_1$1;
-var iterator_1$2 = iterator;
-var InnerSubscriber_1 = InnerSubscriber_1$1;
-var observable_1$2 = observable;
-function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
-    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
-    if (destination.closed) {
-        return null;
-    }
-    if (result instanceof Observable_1$11.Observable) {
-        if (result._isScalar) {
-            destination.next(result.value);
-            destination.complete();
-            return null;
-        }
-        else {
-            return result.subscribe(destination);
-        }
-    }
-    if (isArray_1$3.isArray(result)) {
-        for (var i = 0, len = result.length; i < len && !destination.closed; i++) {
-            destination.next(result[i]);
-        }
-        if (!destination.closed) {
-            destination.complete();
-        }
-    }
-    else if (isPromise_1$3.isPromise(result)) {
-        result.then(function (value) {
-            if (!destination.closed) {
-                destination.next(value);
-                destination.complete();
-            }
-        }, function (err) { return destination.error(err); })
-            .then(null, function (err) {
-            // Escaping the Promise trap: globally throw unhandled errors
-            root_1$7.root.setTimeout(function () { throw err; });
-        });
-        return destination;
-    }
-    else if (typeof result[iterator_1$2.$$iterator] === 'function') {
-        var iterator$$1 = result[iterator_1$2.$$iterator]();
-        do {
-            var item = iterator$$1.next();
-            if (item.done) {
-                destination.complete();
-                break;
-            }
-            destination.next(item.value);
-            if (destination.closed) {
-                break;
-            }
-        } while (true);
-    }
-    else if (typeof result[observable_1$2.$$observable] === 'function') {
-        var obs = result[observable_1$2.$$observable]();
-        if (typeof obs.subscribe !== 'function') {
-            destination.error(new Error('invalid observable'));
-        }
-        else {
-            return obs.subscribe(new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex));
-        }
-    }
-    else {
-        destination.error(new TypeError('unknown type returned'));
-    }
-    return null;
-}
-var subscribeToResult_2 = subscribeToResult;
-
-var subscribeToResult_1$1 = {
-	subscribeToResult: subscribeToResult_2
-};
-
-var __extends$60 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Subscriber_1$6 = Subscriber_1$2;
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-var OuterSubscriber = (function (_super) {
-    __extends$60(OuterSubscriber, _super);
-    function OuterSubscriber() {
-        _super.apply(this, arguments);
-    }
-    OuterSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        this.destination.next(innerValue);
-    };
-    OuterSubscriber.prototype.notifyError = function (error, innerSub) {
-        this.destination.error(error);
-    };
-    OuterSubscriber.prototype.notifyComplete = function (innerSub) {
-        this.destination.complete();
-    };
-    return OuterSubscriber;
-}(Subscriber_1$6.Subscriber));
-var OuterSubscriber_2 = OuterSubscriber;
-
-var OuterSubscriber_1$1 = {
-	OuterSubscriber: OuterSubscriber_2
-};
-
-var __extends$58 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var subscribeToResult_1 = subscribeToResult_1$1;
-var OuterSubscriber_1 = OuterSubscriber_1$1;
+var subscribeToResult_1$3 = subscribeToResult_1$1;
+var OuterSubscriber_1$3 = OuterSubscriber_1$1;
 /**
  * Projects each source value to an Observable which is merged in the output
  * Observable.
@@ -22619,7 +22767,7 @@ var MergeMapOperator_1 = MergeMapOperator;
  * @extends {Ignored}
  */
 var MergeMapSubscriber = (function (_super) {
-    __extends$58(MergeMapSubscriber, _super);
+    __extends$61(MergeMapSubscriber, _super);
     function MergeMapSubscriber(destination, project, resultSelector, concurrent) {
         if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
         _super.call(this, destination);
@@ -22653,7 +22801,7 @@ var MergeMapSubscriber = (function (_super) {
         this._innerSub(result, value, index);
     };
     MergeMapSubscriber.prototype._innerSub = function (ish, value, index) {
-        this.add(subscribeToResult_1.subscribeToResult(this, ish, value, index));
+        this.add(subscribeToResult_1$3.subscribeToResult(this, ish, value, index));
     };
     MergeMapSubscriber.prototype._complete = function () {
         this.hasCompleted = true;
@@ -22692,7 +22840,7 @@ var MergeMapSubscriber = (function (_super) {
         }
     };
     return MergeMapSubscriber;
-}(OuterSubscriber_1.OuterSubscriber));
+}(OuterSubscriber_1$3.OuterSubscriber));
 var MergeMapSubscriber_1 = MergeMapSubscriber;
 
 var mergeMap_1$1 = {
@@ -22763,7 +22911,7 @@ function concatMap(project, resultSelector) {
 }
 var concatMap_2 = concatMap;
 
-var __extends$61 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$62 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -22798,7 +22946,7 @@ var EveryOperator = (function () {
  * @extends {Ignored}
  */
 var EverySubscriber = (function (_super) {
-    __extends$61(EverySubscriber, _super);
+    __extends$62(EverySubscriber, _super);
     function EverySubscriber(destination, predicate, thisArg, source) {
         _super.call(this, destination);
         this.predicate = predicate;
@@ -22830,7 +22978,7 @@ var EverySubscriber = (function (_super) {
     return EverySubscriber;
 }(Subscriber_1$7.Subscriber));
 
-var __extends$63 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$64 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -22846,7 +22994,7 @@ var __extends$63 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, 
  * @class EmptyError
  */
 var EmptyError = (function (_super) {
-    __extends$63(EmptyError, _super);
+    __extends$64(EmptyError, _super);
     function EmptyError() {
         var err = _super.call(this, 'no elements in sequence');
         this.name = err.name = 'EmptyError';
@@ -22861,7 +23009,7 @@ var EmptyError_1$1 = {
 	EmptyError: EmptyError_2
 };
 
-var __extends$62 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$63 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -22939,7 +23087,7 @@ var FirstOperator = (function () {
  * @extends {Ignored}
  */
 var FirstSubscriber = (function (_super) {
-    __extends$62(FirstSubscriber, _super);
+    __extends$63(FirstSubscriber, _super);
     function FirstSubscriber(destination, predicate, resultSelector, defaultValue, source) {
         _super.call(this, destination);
         this.predicate = predicate;
@@ -23008,7 +23156,7 @@ var FirstSubscriber = (function (_super) {
     return FirstSubscriber;
 }(Subscriber_1$8.Subscriber));
 
-var __extends$64 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$65 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -23070,7 +23218,7 @@ var MapOperator = (function () {
  * @extends {Ignored}
  */
 var MapSubscriber = (function (_super) {
-    __extends$64(MapSubscriber, _super);
+    __extends$65(MapSubscriber, _super);
     function MapSubscriber(destination, project, thisArg) {
         _super.call(this, destination);
         this.project = project;
@@ -23093,7 +23241,7 @@ var MapSubscriber = (function (_super) {
     return MapSubscriber;
 }(Subscriber_1$9.Subscriber));
 
-var __extends$65 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$66 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -23164,7 +23312,7 @@ var ReduceOperator = (function () {
  * @extends {Ignored}
  */
 var ReduceSubscriber = (function (_super) {
-    __extends$65(ReduceSubscriber, _super);
+    __extends$66(ReduceSubscriber, _super);
     function ReduceSubscriber(destination, accumulator, seed) {
         _super.call(this, destination);
         this.accumulator = accumulator;
@@ -23202,13 +23350,13 @@ var ReduceSubscriber = (function (_super) {
     return ReduceSubscriber;
 }(Subscriber_1$10.Subscriber));
 
-var __extends$66 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$67 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var OuterSubscriber_1$3 = OuterSubscriber_1$1;
-var subscribeToResult_1$3 = subscribeToResult_1$1;
+var OuterSubscriber_1$4 = OuterSubscriber_1$1;
+var subscribeToResult_1$4 = subscribeToResult_1$1;
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
  * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
@@ -23240,7 +23388,7 @@ var CatchOperator = (function () {
  * @extends {Ignored}
  */
 var CatchSubscriber = (function (_super) {
-    __extends$66(CatchSubscriber, _super);
+    __extends$67(CatchSubscriber, _super);
     function CatchSubscriber(destination, selector, caught) {
         _super.call(this, destination);
         this.selector = selector;
@@ -23260,19 +23408,19 @@ var CatchSubscriber = (function (_super) {
             }
             this.unsubscribe();
             this.destination.remove(this);
-            subscribeToResult_1$3.subscribeToResult(this, result);
+            subscribeToResult_1$4.subscribeToResult(this, result);
         }
     };
     return CatchSubscriber;
-}(OuterSubscriber_1$3.OuterSubscriber));
+}(OuterSubscriber_1$4.OuterSubscriber));
 
-var __extends$67 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$68 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var OuterSubscriber_1$4 = OuterSubscriber_1$1;
-var subscribeToResult_1$4 = subscribeToResult_1$1;
+var OuterSubscriber_1$5 = OuterSubscriber_1$1;
+var subscribeToResult_1$5 = subscribeToResult_1$1;
 /**
  * Converts a higher-order Observable into a first-order Observable which
  * concurrently delivers all values that are emitted on the inner Observables.
@@ -23338,7 +23486,7 @@ var MergeAllOperator_1 = MergeAllOperator;
  * @extends {Ignored}
  */
 var MergeAllSubscriber = (function (_super) {
-    __extends$67(MergeAllSubscriber, _super);
+    __extends$68(MergeAllSubscriber, _super);
     function MergeAllSubscriber(destination, concurrent) {
         _super.call(this, destination);
         this.concurrent = concurrent;
@@ -23349,7 +23497,7 @@ var MergeAllSubscriber = (function (_super) {
     MergeAllSubscriber.prototype._next = function (observable) {
         if (this.active < this.concurrent) {
             this.active++;
-            this.add(subscribeToResult_1$4.subscribeToResult(this, observable));
+            this.add(subscribeToResult_1$5.subscribeToResult(this, observable));
         }
         else {
             this.buffer.push(observable);
@@ -23373,7 +23521,7 @@ var MergeAllSubscriber = (function (_super) {
         }
     };
     return MergeAllSubscriber;
-}(OuterSubscriber_1$4.OuterSubscriber));
+}(OuterSubscriber_1$5.OuterSubscriber));
 var MergeAllSubscriber_1 = MergeAllSubscriber;
 
 var mergeAll_1$1 = {
@@ -23430,7 +23578,7 @@ function concatAll() {
 }
 var concatAll_2 = concatAll;
 
-var __extends$68 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$69 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -23476,7 +23624,7 @@ var LastOperator = (function () {
  * @extends {Ignored}
  */
 var LastSubscriber = (function (_super) {
-    __extends$68(LastSubscriber, _super);
+    __extends$69(LastSubscriber, _super);
     function LastSubscriber(destination, predicate, resultSelector, defaultValue, source) {
         _super.call(this, destination);
         this.predicate = predicate;
@@ -23554,7 +23702,7 @@ var LastSubscriber = (function (_super) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var __extends$69 = (undefined && undefined.__extends) || function (d, b) {
+var __extends$70 = (undefined && undefined.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -23566,7 +23714,7 @@ var __extends$69 = (undefined && undefined.__extends) || function (d, b) {
  */
 var PRIMARY_OUTLET = 'primary';
 var NavigationCancelingError = (function (_super) {
-    __extends$69(NavigationCancelingError, _super);
+    __extends$70(NavigationCancelingError, _super);
     function NavigationCancelingError(message) {
         _super.call(this, message);
         this.message = message;
@@ -24871,7 +25019,7 @@ var TreeNode = (function () {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var __extends$70 = (undefined && undefined.__extends) || function (d, b) {
+var __extends$71 = (undefined && undefined.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -24904,7 +25052,7 @@ var __extends$70 = (undefined && undefined.__extends) || function (d, b) {
  * @stable
  */
 var RouterState = (function (_super) {
-    __extends$70(RouterState, _super);
+    __extends$71(RouterState, _super);
     /**
      * @internal
      */
@@ -25240,7 +25388,7 @@ var ActivatedRouteSnapshot = (function () {
  * @stable
  */
 var RouterStateSnapshot = (function (_super) {
-    __extends$70(RouterStateSnapshot, _super);
+    __extends$71(RouterStateSnapshot, _super);
     /**
      * @internal
      */
@@ -27391,7 +27539,7 @@ var RouterOutlet = (function () {
 
 var getDOM$1 = __platform_browser_private__.getDOM;
 
-var __extends$71 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
+var __extends$72 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -27457,7 +27605,7 @@ var FilterOperator = (function () {
  * @extends {Ignored}
  */
 var FilterSubscriber = (function (_super) {
-    __extends$71(FilterSubscriber, _super);
+    __extends$72(FilterSubscriber, _super);
     function FilterSubscriber(destination, predicate, thisArg) {
         _super.call(this, destination);
         this.predicate = predicate;
@@ -27875,7 +28023,7 @@ var JogadorDetailComponent = (function () {
     JogadorDetailComponent.decorators = [
         { type: Component, args: [{
                     selector: 'fut',
-                    template: "<h1> Aplicativo de Futebol</h1>\n            <h2> Jogador </h2>\n            <h3> {{jogador.nome}}</h3>\n               <textarea type=\"text\" [(ngModel)]= \"jogador.comment\" name=\"comentario\"></textarea>\n               "
+                    template: "<h1> Aplicativo de Futebol</h1>\n             <div *ngIf=\"jogador\">\n                <h2> Jogador </h2>\n                <h3> {{jogador.nome}}</h3>\n                <textarea type=\"text\" [(ngModel)]= \"jogador.comment\" name=\"comentario\"></textarea>\n            </div>\n           "
                 },] },
     ];
     /** @nocollapse */
@@ -27886,152 +28034,6 @@ var JogadorDetailComponent = (function () {
     ];
     return JogadorDetailComponent;
 }());
-
-var __extends$72 = (commonjsGlobal && commonjsGlobal.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var OuterSubscriber_1$5 = OuterSubscriber_1$1;
-var subscribeToResult_1$5 = subscribeToResult_1$1;
-/**
- * Projects each source value to an Observable which is merged in the output
- * Observable, emitting values only from the most recently projected Observable.
- *
- * <span class="informal">Maps each value to an Observable, then flattens all of
- * these inner Observables using {@link switch}.</span>
- *
- * <img src="./img/switchMap.png" width="100%">
- *
- * Returns an Observable that emits items based on applying a function that you
- * supply to each item emitted by the source Observable, where that function
- * returns an (so-called "inner") Observable. Each time it observes one of these
- * inner Observables, the output Observable begins emitting the items emitted by
- * that inner Observable. When a new inner Observable is emitted, `switchMap`
- * stops emitting items from the earlier-emitted inner Observable and begins
- * emitting items from the new one. It continues to behave like this for
- * subsequent inner Observables.
- *
- * @example <caption>Rerun an interval Observable on every click event</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.switchMap((ev) => Rx.Observable.interval(1000));
- * result.subscribe(x => console.log(x));
- *
- * @see {@link concatMap}
- * @see {@link exhaustMap}
- * @see {@link mergeMap}
- * @see {@link switch}
- * @see {@link switchMapTo}
- *
- * @param {function(value: T, ?index: number): Observable} project A function
- * that, when applied to an item emitted by the source Observable, returns an
- * Observable.
- * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
- * A function to produce the value on the output Observable based on the values
- * and the indices of the source (outer) emission and the inner Observable
- * emission. The arguments passed to this function are:
- * - `outerValue`: the value that came from the source
- * - `innerValue`: the value that came from the projected Observable
- * - `outerIndex`: the "index" of the value that came from the source
- * - `innerIndex`: the "index" of the value from the projected Observable
- * @return {Observable} An Observable that emits the result of applying the
- * projection function (and the optional `resultSelector`) to each item emitted
- * by the source Observable and taking only the values from the most recently
- * projected inner Observable.
- * @method switchMap
- * @owner Observable
- */
-function switchMap$2(project, resultSelector) {
-    return this.lift(new SwitchMapOperator(project, resultSelector));
-}
-var switchMap_2 = switchMap$2;
-var SwitchMapOperator = (function () {
-    function SwitchMapOperator(project, resultSelector) {
-        this.project = project;
-        this.resultSelector = resultSelector;
-    }
-    SwitchMapOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
-    };
-    return SwitchMapOperator;
-}());
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-var SwitchMapSubscriber = (function (_super) {
-    __extends$72(SwitchMapSubscriber, _super);
-    function SwitchMapSubscriber(destination, project, resultSelector) {
-        _super.call(this, destination);
-        this.project = project;
-        this.resultSelector = resultSelector;
-        this.index = 0;
-    }
-    SwitchMapSubscriber.prototype._next = function (value) {
-        var result;
-        var index = this.index++;
-        try {
-            result = this.project(value, index);
-        }
-        catch (error) {
-            this.destination.error(error);
-            return;
-        }
-        this._innerSub(result, value, index);
-    };
-    SwitchMapSubscriber.prototype._innerSub = function (result, value, index) {
-        var innerSubscription = this.innerSubscription;
-        if (innerSubscription) {
-            innerSubscription.unsubscribe();
-        }
-        this.add(this.innerSubscription = subscribeToResult_1$5.subscribeToResult(this, result, value, index));
-    };
-    SwitchMapSubscriber.prototype._complete = function () {
-        var innerSubscription = this.innerSubscription;
-        if (!innerSubscription || innerSubscription.closed) {
-            _super.prototype._complete.call(this);
-        }
-    };
-    SwitchMapSubscriber.prototype._unsubscribe = function () {
-        this.innerSubscription = null;
-    };
-    SwitchMapSubscriber.prototype.notifyComplete = function (innerSub) {
-        this.remove(innerSub);
-        this.innerSubscription = null;
-        if (this.isStopped) {
-            _super.prototype._complete.call(this);
-        }
-    };
-    SwitchMapSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        if (this.resultSelector) {
-            this._tryNotifyNext(outerValue, innerValue, outerIndex, innerIndex);
-        }
-        else {
-            this.destination.next(innerValue);
-        }
-    };
-    SwitchMapSubscriber.prototype._tryNotifyNext = function (outerValue, innerValue, outerIndex, innerIndex) {
-        var result;
-        try {
-            result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
-        }
-        catch (err) {
-            this.destination.error(err);
-            return;
-        }
-        this.destination.next(result);
-    };
-    return SwitchMapSubscriber;
-}(OuterSubscriber_1$5.OuterSubscriber));
-
-var switchMap_1$1 = {
-	switchMap: switchMap_2
-};
-
-var Observable_1$12 = Observable_1$1;
-var switchMap_1 = switchMap_1$1;
-Observable_1$12.Observable.prototype.switchMap = switchMap_1.switchMap;
 
 var JogadorListComponent = (function () {
     function JogadorListComponent(service, route, router) {
@@ -28094,6 +28096,46 @@ var AppModule = (function () {
     /** @nocollapse */
     AppModule.ctorParameters = [];
     return AppModule;
+}());
+
+/**
+ * @fileoverview This file is generated by the Angular 2 template compiler.
+ * Do not edit.
+ * @suppress {suspiciousCode,uselessCode,missingProperties}
+ */
+/* tslint:disable */
+var Wrapper_NgIf = (function () {
+    function Wrapper_NgIf(p0, p1) {
+        this._changed = false;
+        this.context = new NgIf(p0, p1);
+        this._expr_0 = UNINITIALIZED;
+    }
+    Wrapper_NgIf.prototype.ngOnDetach = function (view, componentView, el) {
+    };
+    Wrapper_NgIf.prototype.ngOnDestroy = function () {
+    };
+    Wrapper_NgIf.prototype.check_ngIf = function (currValue, throwOnChange, forceUpdate) {
+        if ((forceUpdate || checkBinding(throwOnChange, this._expr_0, currValue))) {
+            this._changed = true;
+            this.context.ngIf = currValue;
+            this._expr_0 = currValue;
+        }
+    };
+    Wrapper_NgIf.prototype.ngDoCheck = function (view, el, throwOnChange) {
+        var changed = this._changed;
+        this._changed = false;
+        return changed;
+    };
+    Wrapper_NgIf.prototype.checkHost = function (view, componentView, el, throwOnChange) {
+    };
+    Wrapper_NgIf.prototype.handleEvent = function (eventName, $event) {
+        var result = true;
+        return result;
+    };
+    Wrapper_NgIf.prototype.subscribe = function (view, _eventHandler) {
+        this._eventHandler = _eventHandler;
+    };
+    return Wrapper_NgIf;
 }());
 
 /**
@@ -28370,90 +28412,140 @@ var View_JogadorDetailComponent0 = (function (_super) {
     __extends$73(View_JogadorDetailComponent0, _super);
     function View_JogadorDetailComponent0(viewUtils, parentView, parentIndex, parentElement) {
         _super.call(this, View_JogadorDetailComponent0, renderType_JogadorDetailComponent, ViewType.COMPONENT, viewUtils, parentView, parentIndex, parentElement, ChangeDetectorStatus.CheckAlways);
-        this._expr_16 = UNINITIALIZED;
     }
     View_JogadorDetailComponent0.prototype.createInternal = function (rootSelector) {
         var parentRenderNode = this.renderer.createViewRoot(this.parentElement);
         this._el_0 = createRenderElement(this.renderer, parentRenderNode, 'h1', EMPTY_INLINE_ARRAY, null);
         this._text_1 = this.renderer.createText(this._el_0, ' Aplicativo de Futebol', null);
-        this._text_2 = this.renderer.createText(parentRenderNode, '\n            ', null);
-        this._el_3 = createRenderElement(this.renderer, parentRenderNode, 'h2', EMPTY_INLINE_ARRAY, null);
-        this._text_4 = this.renderer.createText(this._el_3, ' Jogador ', null);
-        this._text_5 = this.renderer.createText(parentRenderNode, '\n            ', null);
-        this._el_6 = createRenderElement(this.renderer, parentRenderNode, 'h3', EMPTY_INLINE_ARRAY, null);
-        this._text_7 = this.renderer.createText(this._el_6, '', null);
-        this._text_8 = this.renderer.createText(parentRenderNode, '\n               ', null);
-        this._el_9 = createRenderElement(this.renderer, parentRenderNode, 'textarea', new InlineArray4(4, 'name', 'comentario', 'type', 'text'), null);
-        this._DefaultValueAccessor_9_3 = new Wrapper_DefaultValueAccessor(this.renderer, new ElementRef(this._el_9));
-        this._NG_VALUE_ACCESSOR_9_4 = [this._DefaultValueAccessor_9_3.context];
-        this._NgModel_9_5 = new Wrapper_NgModel(null, null, null, this._NG_VALUE_ACCESSOR_9_4);
-        this._NgControl_9_6 = this._NgModel_9_5.context;
-        this._NgControlStatus_9_7 = new Wrapper_NgControlStatus(this._NgControl_9_6);
-        this._text_10 = this.renderer.createText(parentRenderNode, '\n               ', null);
-        var disposable_0 = subscribeToRenderElement(this, this._el_9, new InlineArray8(6, 'ngModelChange', null, 'input', null, 'blur', null), this.eventHandler(this.handleEvent_9));
-        this._NgModel_9_5.subscribe(this, this.eventHandler(this.handleEvent_9), true);
+        this._text_2 = this.renderer.createText(parentRenderNode, '\n             ', null);
+        this._anchor_3 = this.renderer.createTemplateAnchor(parentRenderNode, null);
+        this._vc_3 = new ViewContainer(3, null, this, this._anchor_3);
+        this._TemplateRef_3_5 = new TemplateRef_(this, 3, this._anchor_3);
+        this._NgIf_3_6 = new Wrapper_NgIf(this._vc_3.vcRef, this._TemplateRef_3_5);
+        this._text_4 = this.renderer.createText(parentRenderNode, '\n           ', null);
         this.init(null, (this.renderer.directRenderer ? null : [
             this._el_0,
             this._text_1,
             this._text_2,
-            this._el_3,
-            this._text_4,
-            this._text_5,
-            this._el_6,
-            this._text_7,
-            this._text_8,
-            this._el_9,
-            this._text_10
-        ]), [disposable_0]);
+            this._anchor_3,
+            this._text_4
+        ]), null);
         return null;
     };
     View_JogadorDetailComponent0.prototype.injectorGetInternal = function (token, requestNodeIndex, notFoundResult) {
-        if (((token === DefaultValueAccessor) && (9 === requestNodeIndex))) {
-            return this._DefaultValueAccessor_9_3.context;
+        if (((token === TemplateRef) && (3 === requestNodeIndex))) {
+            return this._TemplateRef_3_5;
         }
-        if (((token === NG_VALUE_ACCESSOR) && (9 === requestNodeIndex))) {
-            return this._NG_VALUE_ACCESSOR_9_4;
-        }
-        if (((token === NgModel) && (9 === requestNodeIndex))) {
-            return this._NgModel_9_5.context;
-        }
-        if (((token === NgControl) && (9 === requestNodeIndex))) {
-            return this._NgControl_9_6;
-        }
-        if (((token === NgControlStatus) && (9 === requestNodeIndex))) {
-            return this._NgControlStatus_9_7.context;
+        if (((token === NgIf) && (3 === requestNodeIndex))) {
+            return this._NgIf_3_6.context;
         }
         return notFoundResult;
     };
     View_JogadorDetailComponent0.prototype.detectChangesInternal = function (throwOnChange) {
-        this._DefaultValueAccessor_9_3.ngDoCheck(this, this._el_9, throwOnChange);
-        var currVal_9_1_0 = 'comentario';
-        this._NgModel_9_5.check_name(currVal_9_1_0, throwOnChange, false);
-        var currVal_9_1_1 = this.context.jogador.comment;
-        this._NgModel_9_5.check_model(currVal_9_1_1, throwOnChange, false);
-        this._NgModel_9_5.ngDoCheck(this, this._el_9, throwOnChange);
-        this._NgControlStatus_9_7.ngDoCheck(this, this._el_9, throwOnChange);
-        var currVal_16 = inlineInterpolate(1, ' ', this.context.jogador.nome, '');
-        if (checkBinding(throwOnChange, this._expr_16, currVal_16)) {
-            this.renderer.setText(this._text_7, currVal_16);
-            this._expr_16 = currVal_16;
-        }
-        this._NgControlStatus_9_7.checkHost(this, this, this._el_9, throwOnChange);
+        var currVal_3_0_0 = this.context.jogador;
+        this._NgIf_3_6.check_ngIf(currVal_3_0_0, throwOnChange, false);
+        this._NgIf_3_6.ngDoCheck(this, this._anchor_3, throwOnChange);
+        this._vc_3.detectChangesInNestedViews(throwOnChange);
     };
     View_JogadorDetailComponent0.prototype.destroyInternal = function () {
-        this._NgModel_9_5.ngOnDestroy();
+        this._vc_3.destroyNestedViews();
     };
-    View_JogadorDetailComponent0.prototype.handleEvent_9 = function (eventName, $event) {
+    View_JogadorDetailComponent0.prototype.createEmbeddedViewInternal = function (nodeIndex) {
+        if ((nodeIndex == 3)) {
+            return new View_JogadorDetailComponent1(this.viewUtils, this, 3, this._anchor_3, this._vc_3);
+        }
+        return null;
+    };
+    return View_JogadorDetailComponent0;
+}(AppView));
+var View_JogadorDetailComponent1 = (function (_super) {
+    __extends$73(View_JogadorDetailComponent1, _super);
+    function View_JogadorDetailComponent1(viewUtils, parentView, parentIndex, parentElement, declaredViewContainer) {
+        _super.call(this, View_JogadorDetailComponent1, renderType_JogadorDetailComponent, ViewType.EMBEDDED, viewUtils, parentView, parentIndex, parentElement, ChangeDetectorStatus.CheckAlways, declaredViewContainer);
+        this._expr_15 = UNINITIALIZED;
+    }
+    View_JogadorDetailComponent1.prototype.createInternal = function (rootSelector) {
+        this._el_0 = createRenderElement(this.renderer, null, 'div', EMPTY_INLINE_ARRAY, null);
+        this._text_1 = this.renderer.createText(this._el_0, '\n                ', null);
+        this._el_2 = createRenderElement(this.renderer, this._el_0, 'h2', EMPTY_INLINE_ARRAY, null);
+        this._text_3 = this.renderer.createText(this._el_2, ' Jogador ', null);
+        this._text_4 = this.renderer.createText(this._el_0, '\n                ', null);
+        this._el_5 = createRenderElement(this.renderer, this._el_0, 'h3', EMPTY_INLINE_ARRAY, null);
+        this._text_6 = this.renderer.createText(this._el_5, '', null);
+        this._text_7 = this.renderer.createText(this._el_0, '\n                ', null);
+        this._el_8 = createRenderElement(this.renderer, this._el_0, 'textarea', new InlineArray4(4, 'name', 'comentario', 'type', 'text'), null);
+        this._DefaultValueAccessor_8_3 = new Wrapper_DefaultValueAccessor(this.renderer, new ElementRef(this._el_8));
+        this._NG_VALUE_ACCESSOR_8_4 = [this._DefaultValueAccessor_8_3.context];
+        this._NgModel_8_5 = new Wrapper_NgModel(null, null, null, this._NG_VALUE_ACCESSOR_8_4);
+        this._NgControl_8_6 = this._NgModel_8_5.context;
+        this._NgControlStatus_8_7 = new Wrapper_NgControlStatus(this._NgControl_8_6);
+        this._text_9 = this.renderer.createText(this._el_0, '\n            ', null);
+        var disposable_0 = subscribeToRenderElement(this, this._el_8, new InlineArray8(6, 'ngModelChange', null, 'input', null, 'blur', null), this.eventHandler(this.handleEvent_8));
+        this._NgModel_8_5.subscribe(this, this.eventHandler(this.handleEvent_8), true);
+        this.init(this._el_0, (this.renderer.directRenderer ? null : [
+            this._el_0,
+            this._text_1,
+            this._el_2,
+            this._text_3,
+            this._text_4,
+            this._el_5,
+            this._text_6,
+            this._text_7,
+            this._el_8,
+            this._text_9
+        ]), [disposable_0]);
+        return null;
+    };
+    View_JogadorDetailComponent1.prototype.injectorGetInternal = function (token, requestNodeIndex, notFoundResult) {
+        if (((token === DefaultValueAccessor) && (8 === requestNodeIndex))) {
+            return this._DefaultValueAccessor_8_3.context;
+        }
+        if (((token === NG_VALUE_ACCESSOR) && (8 === requestNodeIndex))) {
+            return this._NG_VALUE_ACCESSOR_8_4;
+        }
+        if (((token === NgModel) && (8 === requestNodeIndex))) {
+            return this._NgModel_8_5.context;
+        }
+        if (((token === NgControl) && (8 === requestNodeIndex))) {
+            return this._NgControl_8_6;
+        }
+        if (((token === NgControlStatus) && (8 === requestNodeIndex))) {
+            return this._NgControlStatus_8_7.context;
+        }
+        return notFoundResult;
+    };
+    View_JogadorDetailComponent1.prototype.detectChangesInternal = function (throwOnChange) {
+        this._DefaultValueAccessor_8_3.ngDoCheck(this, this._el_8, throwOnChange);
+        var currVal_8_1_0 = 'comentario';
+        this._NgModel_8_5.check_name(currVal_8_1_0, throwOnChange, false);
+        var currVal_8_1_1 = this.parentView.context.jogador.comment;
+        this._NgModel_8_5.check_model(currVal_8_1_1, throwOnChange, false);
+        this._NgModel_8_5.ngDoCheck(this, this._el_8, throwOnChange);
+        this._NgControlStatus_8_7.ngDoCheck(this, this._el_8, throwOnChange);
+        var currVal_15 = inlineInterpolate(1, ' ', this.parentView.context.jogador.nome, '');
+        if (checkBinding(throwOnChange, this._expr_15, currVal_15)) {
+            this.renderer.setText(this._text_6, currVal_15);
+            this._expr_15 = currVal_15;
+        }
+        this._NgControlStatus_8_7.checkHost(this, this, this._el_8, throwOnChange);
+    };
+    View_JogadorDetailComponent1.prototype.destroyInternal = function () {
+        this._NgModel_8_5.ngOnDestroy();
+    };
+    View_JogadorDetailComponent1.prototype.visitRootNodesInternal = function (cb, ctx) {
+        cb(this._el_0, ctx);
+    };
+    View_JogadorDetailComponent1.prototype.handleEvent_8 = function (eventName, $event) {
         this.markPathToRootAsCheckOnce();
         var result = true;
-        result = (this._DefaultValueAccessor_9_3.handleEvent(eventName, $event) && result);
+        result = (this._DefaultValueAccessor_8_3.handleEvent(eventName, $event) && result);
         if ((eventName == 'ngModelChange')) {
-            var pd_sub_0 = ((this.context.jogador.comment = $event) !== false);
+            var pd_sub_0 = ((this.parentView.context.jogador.comment = $event) !== false);
             result = (pd_sub_0 && result);
         }
         return result;
     };
-    return View_JogadorDetailComponent0;
+    return View_JogadorDetailComponent1;
 }(AppView));
 
 /**
