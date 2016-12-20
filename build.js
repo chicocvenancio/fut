@@ -21425,7 +21425,7 @@ var AppComponent = (function () {
     AppComponent.decorators = [
         { type: Component, args: [{
                     selector: 'fut',
-                    template: "\n    <h1 class=\"title\">Aplicativo de Futebol</h1>\n        <nav>\n            <a routerLink=\"/jogadores\" routerLinkActive=\"active\">Jogadores</a>\n            <a routerLink=\"/equipes\" routerLinkActive=\"active\">Equipes</a>\n            <a routerLink=\"/competicao\" routerLinkActive=\"active\">Competi\u00E7\u00F5es</a>\n        </nav>\n    <router-outlet></router-outlet>\n    "
+                    template: "\n    <h1 class=\"title\">Aplicativo de Futebol</h1>\n        <nav>\n            <a routerLink=\"/fut/jogadores\" routerLinkActive=\"active\">Jogadores</a>\n            <a routerLink=\"/fut/equipes\" routerLinkActive=\"active\">Equipes</a>\n            <a routerLink=\"/fut/competicao\" routerLinkActive=\"active\">Competi\u00E7\u00F5es</a>\n        </nav>\n    <router-outlet></router-outlet>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -28048,11 +28048,11 @@ var JogadorListComponent = (function () {
         });
     };
     JogadorListComponent.prototype.onSelect = function (jogador) {
-        this.router.navigate(['/jogador', jogador.id]);
+        this.router.navigate(['/fut/jogador', jogador.id]);
     };
     JogadorListComponent.decorators = [
         { type: Component, args: [{
-                    template: "\n            <table>\n               <thead><th>Nome</th> <th>Posi\u00E7\u00E3o</th> <th>Equipe</th> <th>Pais</th></thead>\n               <tbody><tr *ngFor=\"let jog of jogadores | async\" (click)=\"onSelect(jog)\"> <td  ><a href=\"#\">{{jog.nome}}</a></td><td> {{jog.posicao}}</td> <td> {{jog.equipe}}</td> <td> {{jog.pais}}</td></tr></tbody>\n            </table>\n               "
+                    template: "\n            <table>\n               <thead><th>Nome</th> <th>Posi\u00E7\u00E3o</th> <th>Equipe</th> <th>Pais</th></thead>\n               <tbody><tr *ngFor=\"let jog of jogadores | async\" (click)=\"onSelect(jog)\"> <td  ><a >{{jog.nome}}</a></td><td> {{jog.posicao}}</td> <td> {{jog.equipe}}</td> <td> {{jog.pais}}</td></tr></tbody>\n            </table>\n               "
                 },] },
     ];
     /** @nocollapse */
@@ -28067,7 +28067,8 @@ var JogadorListComponent = (function () {
 var appRoutes = [
     { path: 'fut/jogador/:id', component: JogadorDetailComponent },
     { path: 'fut/jogadores', component: JogadorListComponent },
-    { path: 'fut', redirectTo: 'jogadores', pathMatch: 'full' }
+    { path: 'fut', redirectTo: 'fut/jogadores', pathMatch: 'full' },
+    { path: '', redirectTo: 'fut/jogadores', pathMatch: 'full' }
 ];
 var AppModule = (function () {
     function AppModule() {
@@ -28695,7 +28696,7 @@ var View_JogadorListComponent1 = (function (_super) {
         this._el_0 = createRenderElement(this.renderer, null, 'tr', EMPTY_INLINE_ARRAY, null);
         this._text_1 = this.renderer.createText(this._el_0, ' ', null);
         this._el_2 = createRenderElement(this.renderer, this._el_0, 'td', EMPTY_INLINE_ARRAY, null);
-        this._el_3 = createRenderElement(this.renderer, this._el_2, 'a', new InlineArray2(2, 'href', '#'), null);
+        this._el_3 = createRenderElement(this.renderer, this._el_2, 'a', EMPTY_INLINE_ARRAY, null);
         this._text_4 = this.renderer.createText(this._el_3, '', null);
         this._el_5 = createRenderElement(this.renderer, this._el_0, 'td', EMPTY_INLINE_ARRAY, null);
         this._text_6 = this.renderer.createText(this._el_5, '', null);
@@ -29057,21 +29058,21 @@ var View_AppComponent0 = (function (_super) {
         this._text_3 = this.renderer.createText(parentRenderNode, '\n        ', null);
         this._el_4 = createRenderElement(this.renderer, parentRenderNode, 'nav', EMPTY_INLINE_ARRAY, null);
         this._text_5 = this.renderer.createText(this._el_4, '\n            ', null);
-        this._el_6 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/jogadores', 'routerLinkActive', 'active'), null);
+        this._el_6 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/fut/jogadores', 'routerLinkActive', 'active'), null);
         this._RouterLinkWithHref_6_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
         this._RouterLinkActive_6_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_6), this.renderer);
         this._query_RouterLink_6_0 = new QueryList();
         this._query_RouterLinkWithHref_6_1 = new QueryList();
         this._text_7 = this.renderer.createText(this._el_6, 'Jogadores', null);
         this._text_8 = this.renderer.createText(this._el_4, '\n            ', null);
-        this._el_9 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/equipes', 'routerLinkActive', 'active'), null);
+        this._el_9 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/fut/equipes', 'routerLinkActive', 'active'), null);
         this._RouterLinkWithHref_9_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
         this._RouterLinkActive_9_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_9), this.renderer);
         this._query_RouterLink_9_0 = new QueryList();
         this._query_RouterLinkWithHref_9_1 = new QueryList();
         this._text_10 = this.renderer.createText(this._el_9, 'Equipes', null);
         this._text_11 = this.renderer.createText(this._el_4, '\n            ', null);
-        this._el_12 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/competicao', 'routerLinkActive', 'active'), null);
+        this._el_12 = createRenderElement(this.renderer, this._el_4, 'a', new InlineArray4(4, 'routerLink', '/fut/competicao', 'routerLinkActive', 'active'), null);
         this._RouterLinkWithHref_12_3 = new Wrapper_RouterLinkWithHref(this.parentView.injectorGet(Router, this.parentIndex), this.parentView.injectorGet(ActivatedRoute, this.parentIndex), this.parentView.injectorGet(LocationStrategy, this.parentIndex));
         this._RouterLinkActive_12_4 = new Wrapper_RouterLinkActive(this.parentView.injectorGet(Router, this.parentIndex), new ElementRef(this._el_12), this.renderer);
         this._query_RouterLink_12_0 = new QueryList();
@@ -29137,19 +29138,19 @@ var View_AppComponent0 = (function (_super) {
         return notFoundResult;
     };
     View_AppComponent0.prototype.detectChangesInternal = function (throwOnChange) {
-        var currVal_6_0_0 = '/jogadores';
+        var currVal_6_0_0 = '/fut/jogadores';
         this._RouterLinkWithHref_6_3.check_routerLink(currVal_6_0_0, throwOnChange, false);
         this._RouterLinkWithHref_6_3.ngDoCheck(this, this._el_6, throwOnChange);
         var currVal_6_1_0 = 'active';
         this._RouterLinkActive_6_4.check_routerLinkActive(currVal_6_1_0, throwOnChange, false);
         this._RouterLinkActive_6_4.ngDoCheck(this, this._el_6, throwOnChange);
-        var currVal_9_0_0 = '/equipes';
+        var currVal_9_0_0 = '/fut/equipes';
         this._RouterLinkWithHref_9_3.check_routerLink(currVal_9_0_0, throwOnChange, false);
         this._RouterLinkWithHref_9_3.ngDoCheck(this, this._el_9, throwOnChange);
         var currVal_9_1_0 = 'active';
         this._RouterLinkActive_9_4.check_routerLinkActive(currVal_9_1_0, throwOnChange, false);
         this._RouterLinkActive_9_4.ngDoCheck(this, this._el_9, throwOnChange);
-        var currVal_12_0_0 = '/competicao';
+        var currVal_12_0_0 = '/fut/competicao';
         this._RouterLinkWithHref_12_3.check_routerLink(currVal_12_0_0, throwOnChange, false);
         this._RouterLinkWithHref_12_3.ngDoCheck(this, this._el_12, throwOnChange);
         var currVal_12_1_0 = 'active';
@@ -29541,7 +29542,12 @@ var AppModuleInjector = (function (_super) {
                         },
                         {
                             path: 'fut',
-                            redirectTo: 'jogadores',
+                            redirectTo: 'fut/jogadores',
+                            pathMatch: 'full'
+                        },
+                        {
+                            path: '',
+                            redirectTo: 'fut/jogadores',
                             pathMatch: 'full'
                         }
                     ]
